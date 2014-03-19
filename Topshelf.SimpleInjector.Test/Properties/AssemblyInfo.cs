@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Topshelf.SimpleInjector")]
+[assembly: AssemblyTitle("Topshelf.SimpleInjector.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TynorSoft")]
-[assembly: AssemblyProduct("Topshelf.SimpleInjector")]
+[assembly: AssemblyProduct("Topshelf.SimpleInjector.Test")]
 [assembly: AssemblyCopyright("Copyright © TynorSoft 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c90487d5-adab-445f-9b8b-d6b15acd9f2d")]
+[assembly: Guid("6904f40b-1e18-4a72-bd4f-6d9722757528")]
 
 // Version information for an assembly consists of the following four values:
 //

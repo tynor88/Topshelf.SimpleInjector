@@ -10,10 +10,14 @@ Install
 Example Usage
 =======================
 ```csharp
+using System;
+using SimpleInjector;
+
+namespace Topshelf.SimpleInjector.Sample
+{
     class Program
     {
         private static readonly Container _container = new Container();
-        
         static void Main(string[] args)
         {
             //Register services
@@ -81,6 +85,7 @@ Example Usage
         {
         }
     }
+}
 ```
 
 References

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Topshelf.SimpleInjector.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("TynorSoft")]
+[assembly: AssemblyCompany("TTSoft")]
 [assembly: AssemblyProduct("Topshelf.SimpleInjector.Test")]
-[assembly: AssemblyCopyright("Copyright © TynorSoft 2014")]
+[assembly: AssemblyCopyright("Copyright © TTSoft 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

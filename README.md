@@ -5,8 +5,10 @@ Put your apps on the Topshelf, with the power of SimpleInjector! Topshelf.Simple
 
 Install
 =======================
-You can find the package on [Nuget Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector/)To install Topshelf.SimpleInjector, run the following command in the Package Manager Console:
-PM> `Install-Package Topshelf.SimpleInjector`
+You can find the package on [Nuget Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector/).
+
+To install Topshelf.SimpleInjector, run the following command in the Package Manager Console:
+`Install-Package Topshelf.SimpleInjector`
 
 
 

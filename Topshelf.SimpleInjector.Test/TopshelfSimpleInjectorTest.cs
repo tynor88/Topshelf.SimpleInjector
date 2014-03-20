@@ -3,7 +3,6 @@ using SimpleInjector;
 
 namespace Topshelf.SimpleInjector.Test
 {
-
     [TestFixture]
     public class TopshelfSimpleInjectorTest
     {
@@ -17,25 +16,6 @@ namespace Topshelf.SimpleInjector.Test
             //Register services
             _container.Register<TestService>();
             _container.Register<ITestDependency, TestDependency>();
-        }
-
-        [Test]
-        public void TopShelfUsesSimpleInjectorToResolveDependencies()
-        {
-            Host exitCode =
-                HostFactory.New(config =>
-                {
-                    config.UseTestHost();
-                    config.UseSimpleInjector(_container);
-                    config.Service<TestService>(s =>
-                    {
-                        s.ConstructUsingSimpleInjector();
-                        s.WhenStarted((service, control) => service.Start());
-                        s.WhenStopped((service, control) => service.Stop());
-                    });
-                });
-
-            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
         [Test]
@@ -75,6 +55,25 @@ namespace Topshelf.SimpleInjector.Test
 
             Assert.IsTrue(exception.Message.Contains("The service was not properly configured"));
             Assert.IsTrue(exception.Message.Contains("Factory must not be null"));
+        }
+
+        [Test]
+        public void TopShelfUsesSimpleInjectorToResolveDependencies()
+        {
+            var exitCode =
+                HostFactory.Run(config =>
+                {
+                    config.UseTestHost();
+                    config.UseSimpleInjector(_container);
+                    config.Service<TestService>(s =>
+                    {
+                        s.ConstructUsingSimpleInjector();
+                        s.WhenStarted((service, control) => service.Start());
+                        s.WhenStopped((service, control) => service.Stop());
+                    });
+                });
+
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
         public class TestService

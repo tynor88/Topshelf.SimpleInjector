@@ -1,5 +1,6 @@
 ﻿using System;
 using SimpleInjector;
+using SimpleInjector.Advanced;
 
 namespace Topshelf.SimpleInjector.Sample
 {
@@ -11,17 +12,18 @@ namespace Topshelf.SimpleInjector.Sample
             //Register services
             _container.Register<ISampleDependency, SampleDependency>();
             _container.Register<ISampleDependency2, SampleDependency2>();
-            _container.Register<SampleService>(); //This does not need to be explicitly registered
+            //This does not need to be explicitly registered
+            _container.Register<SampleService>();
 
             //Check container for errors
             _container.Verify();
 
-            HostFactory.Run(c =>
+            HostFactory.Run(config =>
             {
                 // Pass it to Topshelf
-                c.UseSimpleInjector(_container);
+                config.UseSimpleInjector(_container);
 
-                c.Service<SampleService>(s =>
+                config.Service<SampleService>(s =>
                 {
                     // Let Topshelf use it
                     s.ConstructUsingSimpleInjector();
@@ -34,22 +36,25 @@ namespace Topshelf.SimpleInjector.Sample
         public class SampleService
         {
             private readonly ISampleDependency _sample;
+            private readonly ISampleDependency2 _sample2;
 
-            public SampleService(ISampleDependency sample, ISampleDependency2 sampleDependecy2)
+            public SampleService(ISampleDependency sample, ISampleDependency2 sample2)
             {
                 _sample = sample;
+                _sample2 = sample2;
             }
 
             public bool Start()
             {
                 Console.WriteLine("Sample Service Started.");
                 Console.WriteLine("Sample Dependency: {0}", _sample);
-                return _sample != null;
+                Console.WriteLine("Sample Dependency2: {0}", _sample2);
+                return _sample != null && _sample2 != null;
             }
 
             public bool Stop()
             {
-                return _sample != null;
+                return _sample != null && _sample2 != null;
             }
         }
 

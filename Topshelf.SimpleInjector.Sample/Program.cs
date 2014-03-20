@@ -1,6 +1,5 @@
 ﻿using System;
 using SimpleInjector;
-using SimpleInjector.Advanced;
 
 namespace Topshelf.SimpleInjector.Sample
 {

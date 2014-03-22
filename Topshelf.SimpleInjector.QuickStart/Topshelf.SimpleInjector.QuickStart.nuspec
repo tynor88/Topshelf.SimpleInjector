@@ -9,7 +9,14 @@
     <licenseUrl>https://github.com/tynor88/Topshelf.SimpleInjector/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/tynor88/Topshelf.SimpleInjector</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container. This QuickStart package will get you up and running with your Windows Service within one minute. Create a Console Application project, install this package, make sure to overvwrite Program.cs, click Start and you have a running Service.</description>
+    <summary>Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.</summary>
+    <description>
+      Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.
+
+      This QuickStart package will get you up and running with your WindowsService within one minute.
+
+      Create a new Console Application project, install this package, make sure to overvwrite Program.cs, click Start and you have a running Service with SimpleInjector as IoC framework.
+    </description>
     <copyright>Copyright TTSoft 2014</copyright>
     <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host</tags>
     <dependencies>

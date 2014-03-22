@@ -9,9 +9,9 @@
     <licenseUrl>https://github.com/tynor88/Topshelf.SimpleInjector/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/tynor88/Topshelf.SimpleInjector</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Topshelf.SimpleInjector provides extensions to construct your TopShelf service class from the SimpleInjector IoC container.</description>
+    <description>Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.</description>
     <copyright>Copyright TTSoft 2014</copyright>
-    <tags>Topshelf SimpleInjector IoC Service WindowsService Dependency Injection Host</tags>
+    <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host</tags>
     <dependencies>
       <dependency id="SimpleInjector" version="2.5.0" />
       <dependency id="TopShelf" version="3.1.3" />

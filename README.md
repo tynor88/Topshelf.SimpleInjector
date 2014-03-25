@@ -106,7 +106,7 @@ namespace Topshelf.SimpleInjector.Sample
 References
 =======================
 - [Topshelf](http://topshelf-project.com)
-- [SimpleInjector](https://simpleinjector.codeplex.com)
+- [SimpleInjector](https://simpleinjector.org)
 - [Topshelf.Autofac](https://github.com/alexandrnikitin/Topshelf.Autofac)
 
 Copyright & License

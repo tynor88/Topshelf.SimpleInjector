@@ -13,7 +13,7 @@
     <description>
       Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.
 
-      This QuickStart package will quickly get you up and running with your WindowsService
+      This QuickStart package will quickly get you up and running with your WindowsService.
 
       Create a new Console Application project, install this package, make sure to overvwrite Program.cs, click Start and you have a running Service with SimpleInjector as IoC framework.
     </description>

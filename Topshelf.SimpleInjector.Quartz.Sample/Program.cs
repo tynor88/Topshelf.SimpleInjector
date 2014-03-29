@@ -32,6 +32,9 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
                                         .WithSimpleSchedule(
                                             builder => builder.WithIntervalInSeconds(5).RepeatForever()).Build()));
 
+                    s.ScheduleQuartzJob(configurator =>
+                        configurator.WithCronSchedule<SampleJob>("0/1 * * * * ?"));
+
                     // Let Topshelf use it
                     s.ConstructUsingSimpleInjector();
                     s.WhenStarted((service, control) => service.Start());

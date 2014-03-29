@@ -108,6 +108,7 @@ References
 - [Topshelf](http://topshelf-project.com)
 - [SimpleInjector](https://simpleinjector.org)
 - [Topshelf.Autofac](https://github.com/alexandrnikitin/Topshelf.Autofac)
+- [Topshelf.Integrations](https://github.com/dtinteractive/Topshelf.Integrations)
 
 Copyright & License
 =======================

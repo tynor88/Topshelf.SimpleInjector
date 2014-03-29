@@ -19,7 +19,7 @@ namespace Topshelf.SimpleInjector.Test
         }
 
         [Test]
-        public void ExceptionIsThrownWhenUseSimpleInjectorMethodIsNotCalled()
+        public void ExceptionIsThrownWhenUseSimpleInjectorMethodIsNotCalledTest()
         {
             var exception =
                 Assert.Throws<ServiceBuilderException>(() => HostFactory.New(config =>
@@ -38,7 +38,7 @@ namespace Topshelf.SimpleInjector.Test
         }
 
         [Test]
-        public void ExceptionIsThrownWhenConstructUsingSimpleInjectorMethodIsNotCalled()
+        public void ExceptionIsThrownWhenConstructUsingSimpleInjectorMethodIsNotCalledTest()
         {
             var exception =
                 Assert.Throws<HostConfigurationException>(() => HostFactory.New(config =>
@@ -58,7 +58,7 @@ namespace Topshelf.SimpleInjector.Test
         }
 
         [Test]
-        public void TopShelfUsesSimpleInjectorToResolveDependencies()
+        public void TopShelfUsesSimpleInjectorToResolveDependenciesTest()
         {
             var exitCode =
                 HostFactory.Run(config =>

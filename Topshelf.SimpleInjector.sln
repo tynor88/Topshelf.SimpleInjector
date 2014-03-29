@@ -24,6 +24,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Qua
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz.Test", "Topshelf.SimpleInjector.Quartz.Test\Topshelf.SimpleInjector.Quartz.Test.csproj", "{A4F95A48-ACAF-4DE6-98D9-120A49445CC1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Topshelf.SimpleInjector.Projects", "Topshelf.SimpleInjector.Projects", "{8C596259-34B4-4116-A5AF-1A75A9D6E964}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Topshelf.SimpleInjector.Quartz.Projects", "Topshelf.SimpleInjector.Quartz.Projects", "{CB7E2D42-0B37-418D-AAD7-A4B90571646B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,5 +65,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
+		{45A14443-FB02-4D7C-9E67-73EC34601A33} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
+		{46543113-80D2-49E7-A73D-5982DD4309A6} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
+		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
+		{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032} = {CB7E2D42-0B37-418D-AAD7-A4B90571646B}
+		{5F36F98C-096D-48CE-9338-907A51A8533C} = {CB7E2D42-0B37-418D-AAD7-A4B90571646B}
+		{A4F95A48-ACAF-4DE6-98D9-120A49445CC1} = {CB7E2D42-0B37-418D-AAD7-A4B90571646B}
 	EndGlobalSection
 EndGlobal

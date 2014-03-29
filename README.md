@@ -107,6 +107,7 @@ References
 =======================
 - [Topshelf](http://topshelf-project.com)
 - [SimpleInjector](https://simpleinjector.org)
+- [Quartz.NET](http://www.quartz-scheduler.net)
 - [Topshelf.Autofac](https://github.com/alexandrnikitin/Topshelf.Autofac)
 - [Topshelf.Integrations](https://github.com/dtinteractive/Topshelf.Integrations)
 

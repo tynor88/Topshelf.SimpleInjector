@@ -69,7 +69,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj">
+    <ProjectReference Include="..\..\Source\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj">
       <Project>{2fa9135c-12ad-47ce-9a46-4b5bdc1e6032}</Project>
       <Name>Topshelf.SimpleInjector.Quartz</Name>
     </ProjectReference>

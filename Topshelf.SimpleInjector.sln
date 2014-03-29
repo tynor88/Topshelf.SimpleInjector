@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector", "Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj", "{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3A2AB2C4-C72A-4A6E-87EE-A409E3E80239}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -12,21 +10,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3A2AB2
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Sample", "Topshelf.SimpleInjector.Sample\Topshelf.SimpleInjector.Sample.csproj", "{46543113-80D2-49E7-A73D-5982DD4309A6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{2E95EF45-683A-4799-955E-58ACA3D04DFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Test", "Topshelf.SimpleInjector.Test\Topshelf.SimpleInjector.Test.csproj", "{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector", "Source\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj", "{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.QuickStart", "Topshelf.SimpleInjector.QuickStart\Topshelf.SimpleInjector.QuickStart.csproj", "{45A14443-FB02-4D7C-9E67-73EC34601A33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz", "Source\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj", "{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz", "Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj", "{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.QuickStart", "Source\Topshelf.SimpleInjector.QuickStart\Topshelf.SimpleInjector.QuickStart.csproj", "{45A14443-FB02-4D7C-9E67-73EC34601A33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz.Sample", "Topshelf.SimpleInjector.Quartz.Sample\Topshelf.SimpleInjector.Quartz.Sample.csproj", "{5F36F98C-096D-48CE-9338-907A51A8533C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2FFCA6A2-8F71-42A1-9EDC-4DA63A6B459E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz.Test", "Topshelf.SimpleInjector.Quartz.Test\Topshelf.SimpleInjector.Quartz.Test.csproj", "{A4F95A48-ACAF-4DE6-98D9-120A49445CC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz.Test", "Tests\Topshelf.SimpleInjector.Quartz.Test\Topshelf.SimpleInjector.Quartz.Test.csproj", "{A4F95A48-ACAF-4DE6-98D9-120A49445CC1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Topshelf.SimpleInjector.Projects", "Topshelf.SimpleInjector.Projects", "{8C596259-34B4-4116-A5AF-1A75A9D6E964}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Test", "Tests\Topshelf.SimpleInjector.Test\Topshelf.SimpleInjector.Test.csproj", "{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Topshelf.SimpleInjector.Quartz.Projects", "Topshelf.SimpleInjector.Quartz.Projects", "{CB7E2D42-0B37-418D-AAD7-A4B90571646B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{20BC121B-A376-4B49-9574-5E4FFDED3536}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz.Sample", "Samples\Topshelf.SimpleInjector.Quartz.Sample\Topshelf.SimpleInjector.Quartz.Sample.csproj", "{5F36F98C-096D-48CE-9338-907A51A8533C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Sample", "Samples\Topshelf.SimpleInjector.Sample\Topshelf.SimpleInjector.Sample.csproj", "{46543113-80D2-49E7-A73D-5982DD4309A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,41 +40,41 @@ Global
 		{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46543113-80D2-49E7-A73D-5982DD4309A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46543113-80D2-49E7-A73D-5982DD4309A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46543113-80D2-49E7-A73D-5982DD4309A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46543113-80D2-49E7-A73D-5982DD4309A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F36F98C-096D-48CE-9338-907A51A8533C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F36F98C-096D-48CE-9338-907A51A8533C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F36F98C-096D-48CE-9338-907A51A8533C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F36F98C-096D-48CE-9338-907A51A8533C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A14443-FB02-4D7C-9E67-73EC34601A33}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4F95A48-ACAF-4DE6-98D9-120A49445CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4F95A48-ACAF-4DE6-98D9-120A49445CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F95A48-ACAF-4DE6-98D9-120A49445CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4F95A48-ACAF-4DE6-98D9-120A49445CC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F36F98C-096D-48CE-9338-907A51A8533C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F36F98C-096D-48CE-9338-907A51A8533C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F36F98C-096D-48CE-9338-907A51A8533C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F36F98C-096D-48CE-9338-907A51A8533C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46543113-80D2-49E7-A73D-5982DD4309A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46543113-80D2-49E7-A73D-5982DD4309A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46543113-80D2-49E7-A73D-5982DD4309A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46543113-80D2-49E7-A73D-5982DD4309A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
-		{45A14443-FB02-4D7C-9E67-73EC34601A33} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
-		{46543113-80D2-49E7-A73D-5982DD4309A6} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
-		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028} = {8C596259-34B4-4116-A5AF-1A75A9D6E964}
-		{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032} = {CB7E2D42-0B37-418D-AAD7-A4B90571646B}
-		{5F36F98C-096D-48CE-9338-907A51A8533C} = {CB7E2D42-0B37-418D-AAD7-A4B90571646B}
-		{A4F95A48-ACAF-4DE6-98D9-120A49445CC1} = {CB7E2D42-0B37-418D-AAD7-A4B90571646B}
+		{B4E07581-5FFF-404D-8BBE-6E0B19EF00B6} = {2E95EF45-683A-4799-955E-58ACA3D04DFD}
+		{2FA9135C-12AD-47CE-9A46-4B5BDC1E6032} = {2E95EF45-683A-4799-955E-58ACA3D04DFD}
+		{45A14443-FB02-4D7C-9E67-73EC34601A33} = {2E95EF45-683A-4799-955E-58ACA3D04DFD}
+		{A4F95A48-ACAF-4DE6-98D9-120A49445CC1} = {2FFCA6A2-8F71-42A1-9EDC-4DA63A6B459E}
+		{00A7D968-2D5D-4CA4-9C3B-7DDD6DE20028} = {2FFCA6A2-8F71-42A1-9EDC-4DA63A6B459E}
+		{5F36F98C-096D-48CE-9338-907A51A8533C} = {20BC121B-A376-4B49-9574-5E4FFDED3536}
+		{46543113-80D2-49E7-A73D-5982DD4309A6} = {20BC121B-A376-4B49-9574-5E4FFDED3536}
 	EndGlobalSection
 EndGlobal

@@ -60,7 +60,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj">
+    <ProjectReference Include="..\..\Source\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj">
       <Project>{b4e07581-5fff-404d-8bbe-6e0b19ef00b6}</Project>
       <Name>Topshelf.SimpleInjector</Name>
     </ProjectReference>

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Topshelf.SimpleInjector.QuickStart</id>
-    <version>0.1.0.0</version>
+    <version>0.1.2.0</version>
     <title>Topshelf.SimpleInjector.QuickStart</title>
     <authors>Thomas T</authors>
     <owners>TTSoft</owners>

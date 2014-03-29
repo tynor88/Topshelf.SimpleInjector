@@ -30,7 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Qua
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Sample", "Samples\Topshelf.SimpleInjector.Sample\Topshelf.SimpleInjector.Sample.csproj", "{46543113-80D2-49E7-A73D-5982DD4309A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.QuartzAsService.Sample", "Topshelf.SimpleInjector.QuartzAsService.Sample\Topshelf.SimpleInjector.QuartzAsService.Sample.csproj", "{C2FB00D2-647B-4705-B974-F6D7F651AF21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.QuartzAsService.Sample", "Samples\Topshelf.SimpleInjector.QuartzAsService.Sample\Topshelf.SimpleInjector.QuartzAsService.Sample.csproj", "{C2FB00D2-647B-4705-B974-F6D7F651AF21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

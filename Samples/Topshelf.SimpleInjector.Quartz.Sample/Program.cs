@@ -25,6 +25,7 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
 
                 config.Service<SampleService>(s =>
                 {
+                    //Using full Quartz Builder framework for advanced scenarios
                     s.ScheduleQuartzJob(
                         configurator =>
                             configurator.WithJob(
@@ -34,9 +35,11 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
                                         .WithSimpleSchedule(
                                             builder => builder.WithIntervalInSeconds(1).RepeatForever()).Build()));
 
+                    //Cron Scheduled
                     s.ScheduleQuartzJob(configurator =>
                         configurator.WithCronSchedule<CronScheduledJob>("0/1 * * * * ?", "CronScheduledJob"));
 
+                    //Simple Repeatable Scheduled from TimeSpan
                     s.ScheduleQuartzJob(configurator =>
                         configurator.WithSimpleRepeatableSchedule<SimpleRepeatableScheduledJob>(
                             TimeSpan.FromSeconds(1), "SimpleRepeatableScheduledJob"));

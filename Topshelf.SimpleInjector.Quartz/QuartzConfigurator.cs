@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Quartz;
 
 namespace Topshelf.SimpleInjector.Quartz
@@ -7,12 +8,12 @@ namespace Topshelf.SimpleInjector.Quartz
     public class QuartzConfigurator
     {
         public Func<IJobDetail> Job { get; set; }
-        public IList<Func<ITrigger>> Triggers { get; set; }
+        public ICollection<Func<ITrigger>> Triggers { get; set; }
         public Func<bool> JobEnabled { get; set; }
 
         public QuartzConfigurator()
         {
-            Triggers = new List<Func<ITrigger>>();
+            Triggers = new Collection<Func<ITrigger>>();
         }
 
         #region Quartz Builder Framework
@@ -39,35 +40,69 @@ namespace Topshelf.SimpleInjector.Quartz
 
         #region Simple Configuration Extensions
 
-        public QuartzConfigurator WithCronSchedule<TJob>(string cronSchedule, string jobIdentity) where TJob : IJob
+        /// <summary>
+        /// Create a job with a CronSchedule
+        /// </summary>
+        /// <typeparam name="TJob">The Job that is registered with the SimpleInjector container</typeparam>
+        /// <param name="cronExpression">The cronExpression the job must be triggered by</param>
+        /// <param name="jobIdentity">Unique Identifier for the Job. If null is passed, the namespace including class name will be used</param>
+        /// <returns>The QuartzConfigurator for chained constructions</returns>
+        public QuartzConfigurator WithCronSchedule<TJob>(string cronExpression, string jobIdentity = null) where TJob : IJob
         {
-            if (string.IsNullOrWhiteSpace(jobIdentity))
+            if (CronExpression.IsValidExpression(cronExpression))
             {
-                WithCronSchedule<TJob>(cronSchedule);
-            }
-            if (!string.IsNullOrWhiteSpace(cronSchedule))
-            {
-                Func<IJobDetail> jobDetail = () => JobBuilder
-                    .Create<TJob>()
-                    .WithIdentity(jobIdentity)
-                    .Build();
-                WithJob(jobDetail);
+                CreateJobDeailFunc<TJob>(jobIdentity);
 
                 Func<ITrigger> trigger = () => TriggerBuilder
                     .Create()
-                    .WithCronSchedule(cronSchedule)
+                    .WithCronSchedule(cronExpression)
                     .Build();
                 AddTrigger(trigger);
 
                 return this;
             }
 
-            throw new ArgumentException("must specify a valid cron schedule expression", "cronSchedule");
+            throw new ArgumentException("must specify a valid cron expression", "cronExpression");
         }
 
-        public QuartzConfigurator WithCronSchedule<TJob>(string cronSchedule) where TJob : IJob
+        /// <summary>
+        /// Create a job with a simple forever repeatable schedule defined by a TimeSpan
+        /// </summary>
+        /// <typeparam name="TJob">The Job that is registered with the SimpleInjector container</typeparam>
+        /// <param name="timeSpan">The TimeSpan the job must be triggered by</param>
+        /// <param name="jobIdentity">Unique Identifier for the Job. If null is passed, the namespace including class name will be used</param>
+        /// <returns>The QuartzConfigurator for chained constructions</returns>
+        public QuartzConfigurator WithSimpleRepeatableSchedule<TJob>(TimeSpan timeSpan, string jobIdentity = null) where TJob : IJob
         {
-            return WithCronSchedule<TJob>(cronSchedule, typeof(TJob).ToString());
+            CreateJobDeailFunc<TJob>(jobIdentity);
+
+            Func<ITrigger> trigger = () => TriggerBuilder
+                .Create()
+                .WithSimpleSchedule(builder => builder
+                    .WithInterval(timeSpan)
+                    .RepeatForever())
+                .Build();
+            AddTrigger(trigger);
+
+            return this;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void CreateJobDeailFunc<TJob>(string jobIdentity) where TJob : IJob
+        {
+            if (string.IsNullOrWhiteSpace(jobIdentity))
+            {
+                jobIdentity = typeof(TJob).ToString();
+            }
+
+            Func<IJobDetail> jobDetail = () => JobBuilder
+                .Create<TJob>()
+                .WithIdentity(jobIdentity)
+                .Build();
+            WithJob(jobDetail);
         }
 
         #endregion

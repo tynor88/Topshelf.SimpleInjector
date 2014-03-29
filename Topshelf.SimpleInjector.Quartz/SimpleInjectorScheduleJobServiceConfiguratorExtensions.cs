@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
@@ -40,27 +38,11 @@ namespace Topshelf.SimpleInjector.Quartz
                 return scheduler;
             });
 
-            RegisterJobs(container);
-
             Func<IScheduler> schedulerFunc = () => container.GetInstance<IScheduler>();
 
             ScheduleJobServiceConfiguratorExtensions.SchedulerFactory = schedulerFunc;
 
             log.Info("[Topshelf.SimpleInjector.Quartz] Quartz configured to construct jobs with SimpleInjector.");
-        }
-
-        private static void RegisterJobs(Container container)
-        {
-            // Optional but advisable: register all job implementations.
-            var jobTypes = Assembly.GetCallingAssembly()
-                .GetExportedTypes()
-                .Where(type => typeof(IJob).IsAssignableFrom(type))
-                .Where(type => !type.IsAbstract && !type.IsGenericTypeDefinition);
-
-            foreach (Type jobType in jobTypes)
-            {
-                container.Register(jobType);
-            }
         }
     }
 }

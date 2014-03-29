@@ -6,6 +6,13 @@ namespace Topshelf.SimpleInjector.Quartz
 {
     public static class ScheduleJobHostConfiguratorExtensions
     {
+        /// <summary>
+        /// Provide your own IJobFactory implementation for SimpleInjector to resolve IJob instances
+        /// </summary>
+        /// <typeparam name="TJobFactory">The JobFactory type</typeparam>
+        /// <param name="configurator">The hostconfigurator</param>
+        /// <param name="jobFactory">The Func to create a new TJobFactory</param>
+        /// <returns>The hostconfigurator</returns>
         public static HostConfigurator UsingQuartzJobFactory<TJobFactory>(this HostConfigurator configurator, Func<TJobFactory> jobFactory)
             where TJobFactory : IJobFactory
         {
@@ -13,6 +20,12 @@ namespace Topshelf.SimpleInjector.Quartz
             return configurator;
         }
 
+        /// <summary>
+        /// Provide your own IJobFactory implementation for SimpleInjector to resolve IJob instances
+        /// </summary>
+        /// <typeparam name="TJobFactory"></typeparam>
+        /// <param name="configurator"></param>
+        /// <returns></returns>
         public static HostConfigurator UsingQuartzJobFactory<TJobFactory>(this HostConfigurator configurator)
             where TJobFactory : IJobFactory, new()
         {

@@ -7,13 +7,14 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
     class Program
     {
         private static readonly Container _container = new Container();
+
         static void Main(string[] args)
         {
             //Register services
             _container.Register<ISampleDependency, SampleDependency>();
-            _container.Register<IJob, SampleJob>();
             //This does not need to be explicitly registered
             _container.Register<SampleService>();
+            _container.Register<IDependencyInjected, DependencyInjected>();
 
             HostFactory.Run(config =>
             {
@@ -26,14 +27,19 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
                 {
                     s.ScheduleQuartzJob(
                         configurator =>
-                            configurator.WithJob(() => JobBuilder.Create<IJob>().WithIdentity("SampleJob").Build())
+                            configurator.WithJob(
+                                () => JobBuilder.Create<WithInjectedDependenciesJob>().WithIdentity("WithInjectedDependenciesJob").Build())
                                 .AddTrigger(() =>
                                     TriggerBuilder.Create()
                                         .WithSimpleSchedule(
-                                            builder => builder.WithIntervalInSeconds(5).RepeatForever()).Build()));
+                                            builder => builder.WithIntervalInSeconds(1).RepeatForever()).Build()));
 
                     s.ScheduleQuartzJob(configurator =>
-                        configurator.WithCronSchedule<SampleJob>("0/1 * * * * ?"));
+                        configurator.WithCronSchedule<CronScheduledJob>("0/1 * * * * ?", "CronScheduledJob"));
+
+                    s.ScheduleQuartzJob(configurator =>
+                        configurator.WithSimpleRepeatableSchedule<SimpleRepeatableScheduledJob>(
+                            TimeSpan.FromSeconds(1), "SimpleRepeatableScheduledJob"));
 
                     // Let Topshelf use it
                     s.ConstructUsingSimpleInjector();
@@ -67,14 +73,14 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
 
         public interface ISampleDependency
         {
-            void Hello();
+            void TestInjected();
         }
 
         public class SampleDependency : ISampleDependency
         {
-            public void Hello()
+            public void TestInjected()
             {
-                Console.WriteLine("Hello");
+                Console.WriteLine("[" + typeof(SampleDependency).Name + "] Triggered " + DateTime.Now.ToLongTimeString());
             }
         }
 
@@ -89,7 +95,51 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
 
             public void Execute(IJobExecutionContext context)
             {
-                _sampleDependency.Hello();
+                _sampleDependency.TestInjected();
+            }
+        }
+
+        public class WithInjectedDependenciesJob : IJob
+        {
+            private readonly IDependencyInjected _dependencyInjected;
+
+            public WithInjectedDependenciesJob(IDependencyInjected dependencyInjected)
+            {
+                _dependencyInjected = dependencyInjected;
+            }
+
+            public void Execute(IJobExecutionContext context)
+            {
+                _dependencyInjected.Execute();
+            }
+        }
+
+        public interface IDependencyInjected
+        {
+            void Execute();
+        }
+
+        public class DependencyInjected : IDependencyInjected
+        {
+            public void Execute()
+            {
+                Console.WriteLine("[" + typeof(DependencyInjected).Name + "] Triggered " + DateTime.Now.ToLongTimeString());
+            }
+        }
+
+        public class SimpleRepeatableScheduledJob : IJob
+        {
+            public void Execute(IJobExecutionContext context)
+            {
+                Console.WriteLine("[" + typeof(SimpleRepeatableScheduledJob).Name + "] Triggered " + DateTime.Now.ToLongTimeString());
+            }
+        }
+
+        public class CronScheduledJob : IJob
+        {
+            public void Execute(IJobExecutionContext context)
+            {
+                Console.WriteLine("[" + typeof(CronScheduledJob).Name + "] Triggered " + DateTime.Now.ToLongTimeString());
             }
         }
     }

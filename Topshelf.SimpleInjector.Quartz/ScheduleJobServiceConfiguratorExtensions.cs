@@ -2,7 +2,6 @@
 using System.Linq;
 using Quartz;
 using Quartz.Collection;
-using Quartz.Impl;
 using Quartz.Spi;
 using Topshelf.Logging;
 using Topshelf.ServiceConfigurators;
@@ -89,7 +88,6 @@ namespace Topshelf.SimpleInjector.Quartz
                     Scheduler.Shutdown(true);
                     log.Info("[Topshelf.Quartz] Scheduler shut down...");
                 });
-
             }
         }
     }

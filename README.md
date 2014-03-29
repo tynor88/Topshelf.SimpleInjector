@@ -5,14 +5,14 @@ Put your apps on the Topshelf, with the power of SimpleInjector! Topshelf.Simple
 
 Install
 =======================
-You can find the package on [Nuget Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector/).
+You can find the package on [NuGet Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector/).
 
 To install Topshelf.SimpleInjector, run the following command in the Package Manager Console:
 `Install-Package Topshelf.SimpleInjector`
 
 Quick Start
 =======================
-You can also find a Quick Start package on [Nuget Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector.QuickStart/). This will get you up and running with your Topshelf Windows Service and SimpleInjector IoC Framework within one minute, when following these steps:
+You can also find a Quick Start package on [NuGet Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector.QuickStart/). This will get you up and running with your Topshelf Windows Service and SimpleInjector IoC Framework within one minute, when following these steps:
 
 - 1) Create a new Console Application in Visual Studio
 - 2) Install Topshelf.SimpleInjector.QuickStart, running the following command in the Package Manager Console:

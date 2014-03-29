@@ -12,14 +12,14 @@ To install Topshelf.SimpleInjector, run the following command in the Package Man
 
 Quick Start
 =======================
-You can also find a Quick Start package on [NuGet Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector.QuickStart/). This will get you up and running with your Topshelf Windows Service and SimpleInjector IoC Framework within one minute, when following these steps:
+You can also find a Quick Start package on [NuGet Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector.QuickStart/). This will quickly get you up and running with your Topshelf Windows Service and SimpleInjector IoC Framework, when following these steps:
 
 - 1) Create a new Console Application in Visual Studio
 - 2) Install Topshelf.SimpleInjector.QuickStart, running the following command in the Package Manager Console:
 `Install-Package Topshelf.SimpleInjector.QuickStart`
 - 3) When your asked to overwrite Program.cs click Yes
-- 4) Click Start and you will have a running Service
-- 5) Change the Service name and implement your logic :-)
+- 4) Click start and you will have a running service
+- 5) Change the service name and implement your logic :-)
 
 Example Usage
 =======================

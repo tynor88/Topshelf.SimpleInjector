@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Topshelf.SimpleInjector.Quartz</id>
+    <version>0.1.0.0</version>
+    <title>Topshelf.SimpleInjector.Quartz</title>
+    <authors>Thomas T</authors>
+    <owners>TTSoft</owners>
+    <licenseUrl>https://github.com/tynor88/Topshelf.SimpleInjector/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/tynor88/Topshelf.SimpleInjector</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Topshelf.SimpleInjector.Quartz provides extensions to schedule your Topshelf Service with Quartz.NET using SimpleInjector IoC container.</summary>
+    <description>Topshelf.SimpleInjector.Quartz provides extensions to schedule your Topshelf Service with Quartz.NET using SimpleInjector IoC container.</description>
+    <copyright>Copyright TTSoft 2014</copyright>
+    <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host Quartz Quartz.NET Scheduling Schedule Cron</tags>
+    <dependencies>
+      <dependency id="Topshelf.SimpleInjector" version="0.1.1.0" />
+      <dependency id="Quartz" version="2.2.2" />
+    </dependencies>
+  </metadata>
+</package>

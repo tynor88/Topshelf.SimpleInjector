@@ -32,16 +32,22 @@ namespace Topshelf.SimpleInjector.Quartz
             return UsingQuartzJobFactory(configurator, () => new TJobFactory());
         }
 
-        //public static HostConfigurator ScheduleQuartzJobAsService(this HostConfigurator configurator, Action<QuartzConfigurator> jobConfigurator)
-        //{
-        //    configurator.Service<NullService>(s => s
-        //                                            .ScheduleQuartzJob(jobConfigurator)
-        //                                            .WhenStarted(p => p.Start())
-        //                                            .WhenStopped(p => p.Stop())
-        //                                            .ConstructUsing(settings => new NullService())
-        //                                            );
+        /// <summary>
+        /// Schedule a Quartz Job as a Service
+        /// </summary>
+        /// <param name="configurator">The HostConfigurator</param>
+        /// <param name="jobConfigurator">The jobConfigurator Action</param>
+        /// <returns>HostConfigurator</returns>
+        public static HostConfigurator ScheduleQuartzJobAsService(this HostConfigurator configurator, Action<QuartzConfigurator> jobConfigurator)
+        {
+            configurator.Service<NullService>(s => s
+                .ScheduleQuartzJob(jobConfigurator)
+                .WhenStarted(p => p.Start())
+                .WhenStopped(p => p.Stop())
+                .ConstructUsing(settings => new NullService())
+                );
 
-        //    return configurator;
-        //}
+            return configurator;
+        }
     }
 }

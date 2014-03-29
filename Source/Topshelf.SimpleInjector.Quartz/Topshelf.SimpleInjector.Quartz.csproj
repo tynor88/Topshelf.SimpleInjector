@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NullService.cs" />
     <Compile Include="QuartzConfigurator.cs" />
     <Compile Include="ScheduleJobHostConfiguratorExtensions.cs" />
     <Compile Include="ScheduleJobServiceConfiguratorExtensions.cs" />

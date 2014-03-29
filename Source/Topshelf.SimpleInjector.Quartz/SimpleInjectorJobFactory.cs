@@ -16,6 +16,8 @@ namespace Topshelf.SimpleInjector.Quartz
 
         #endregion
 
+        #region Constructor
+
         /// <summary>
         /// Instantiate a new SimpleInjectorJobFactory which is able to produce IJob implementations
         /// </summary>
@@ -24,6 +26,10 @@ namespace Topshelf.SimpleInjector.Quartz
         {
             _container = container;
         }
+
+        #endregion
+
+        #region IJobFactory Members
 
         /// <summary>
         /// Called by the scheduler at the time of the trigger firing, in order to produce a Quartz.IJob instance on which to call Execute.
@@ -59,5 +65,7 @@ namespace Topshelf.SimpleInjector.Quartz
         public void ReturnJob(IJob job)
         {
         }
+
+        #endregion
     }
 }

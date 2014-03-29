@@ -7,14 +7,34 @@ namespace Topshelf.SimpleInjector.Quartz
 {
     public class QuartzConfigurator
     {
-        public Func<IJobDetail> Job { get; set; }
-        public ICollection<Func<ITrigger>> Triggers { get; set; }
-        public Func<bool> JobEnabled { get; set; }
+        #region Private Fields
+
+        private ICollection<Func<ITrigger>> _triggers;
+
+        #endregion
+
+        #region Properties
+
+        public Func<IJobDetail> Job { get; private set; }
+
+        public ICollection<Func<ITrigger>> Triggers
+        {
+            get { return _triggers ?? (_triggers = new Collection<Func<ITrigger>>()); }
+            set { _triggers = value; }
+        }
+
+        public Func<bool> JobEnabled { get; private set; }
+
+        #endregion
+
+        #region Constructor
 
         public QuartzConfigurator()
         {
             Triggers = new Collection<Func<ITrigger>>();
         }
+
+        #endregion
 
         #region Quartz Builder Framework
 

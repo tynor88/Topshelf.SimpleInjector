@@ -60,9 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Topshelf.3.1.3\lib\net40-full\Topshelf.dll</HintPath>
     </Reference>
-    <Reference Include="Topshelf.SimpleInjector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Topshelf.SimpleInjector, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Topshelf.SimpleInjector.0.1.1.0\lib\net45\Topshelf.SimpleInjector.dll</HintPath>
+      <HintPath>..\..\packages\Topshelf.SimpleInjector.0.1.2.0\lib\net45\Topshelf.SimpleInjector.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

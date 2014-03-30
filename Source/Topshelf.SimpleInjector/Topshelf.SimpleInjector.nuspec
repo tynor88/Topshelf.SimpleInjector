@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Topshelf.SimpleInjector</id>
-    <version>0.1.2.0</version>
-    <title>Topshelf.SimpleInjector</title>
-    <authors>Thomas T</authors>
-    <owners>TTSoft</owners>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
     <licenseUrl>https://github.com/tynor88/Topshelf.SimpleInjector/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/tynor88/Topshelf.SimpleInjector</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.</summary>
-    <description>Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.</description>
-    <copyright>Copyright TTSoft 2014</copyright>
+    <summary>$description$</summary>
+    <description>$description$</description>
+    <copyright>Copyright $author$ 2014</copyright>
     <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host</tags>
     <dependencies>
       <dependency id="SimpleInjector" version="2.5.0" />

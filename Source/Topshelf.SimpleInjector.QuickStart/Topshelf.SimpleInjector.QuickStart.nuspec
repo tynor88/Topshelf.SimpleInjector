@@ -1,26 +1,30 @@
 ﻿<?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Topshelf.SimpleInjector.QuickStart</id>
-    <version>0.1.2.0</version>
-    <title>Topshelf.SimpleInjector.QuickStart</title>
-    <authors>Thomas T</authors>
-    <owners>TTSoft</owners>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
     <licenseUrl>https://github.com/tynor88/Topshelf.SimpleInjector/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/tynor88/Topshelf.SimpleInjector</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.</summary>
+    <summary>$description$</summary>
     <description>
-      Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.
+      $description$
 
       This QuickStart package will quickly get you up and running with your WindowsService.
 
       Create a new Console Application project, install this package, make sure to overvwrite Program.cs, click Start and you have a running Service with SimpleInjector as IoC framework.
     </description>
-    <copyright>Copyright TTSoft 2014</copyright>
+    <copyright>Copyright $author$ 2014</copyright>
     <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host</tags>
     <dependencies>
       <dependency id="Topshelf.SimpleInjector" version="0.1.2.0" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="Content\*.cs" target="Content" />
+    <file src="readme.txt" target="" />
+  </files>
 </package>

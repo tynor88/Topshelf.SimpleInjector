@@ -66,6 +66,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyVersion.cs">
+      <Link>Properties\AssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="NullService.cs" />
     <Compile Include="QuartzConfigurator.cs" />
     <Compile Include="ScheduleJobHostConfiguratorExtensions.cs" />

@@ -1,8 +1,9 @@
 ﻿using System;
 using Quartz;
 using SimpleInjector;
+using Topshelf.SimpleInjector.Quartz;
 
-namespace Topshelf.SimpleInjector.Quartz.Sample
+namespace Topshelf.SimpleInjector.QuartzAsService.Sample
 {
     class Program
     {

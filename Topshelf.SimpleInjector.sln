@@ -32,11 +32,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.QuartzAsService.Sample", "Samples\Topshelf.SimpleInjector.QuartzAsService.Sample\Topshelf.SimpleInjector.QuartzAsService.Sample.csproj", "{C2FB00D2-647B-4705-B974-F6D7F651AF21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher", "Topshelf.FileSystemWatcher\Topshelf.FileSystemWatcher.csproj", "{36EAAFA9-825E-4F59-94FD-8A44E9A1374A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher", "Source\Topshelf.FileSystemWatcher\Topshelf.FileSystemWatcher.csproj", "{36EAAFA9-825E-4F59-94FD-8A44E9A1374A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher.Sample", "Topshelf.FileSystemWatcher.Sample\Topshelf.FileSystemWatcher.Sample.csproj", "{84A32194-2A00-4BE2-8970-9461371C6E79}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher.Sample", "Samples\Topshelf.FileSystemWatcher.Sample\Topshelf.FileSystemWatcher.Sample.csproj", "{84A32194-2A00-4BE2-8970-9461371C6E79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher.Test", "Topshelf.FileSystemWatcher.Test\Topshelf.FileSystemWatcher.Test.csproj", "{57A54600-5F61-4C3F-BAEC-FAF08F704163}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher.Test", "Tests\Topshelf.FileSystemWatcher.Test\Topshelf.FileSystemWatcher.Test.csproj", "{57A54600-5F61-4C3F-BAEC-FAF08F704163}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

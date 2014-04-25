@@ -15,8 +15,6 @@ namespace Topshelf.FileSystemWatcher
         private static readonly ICollection<System.IO.FileSystemWatcher> _watchers =
             new Collection<System.IO.FileSystemWatcher>();
 
-        #region Test
-
         public static ServiceConfigurator<T> WhenFileSystemChanged<T>(this ServiceConfigurator<T> configurator,
             Action<FileSystemWatcherConfigurator> fileSystemWatcherConfigurator,
             Action<TopshelfFileSystemEventArgs> fileSystemChanged)
@@ -92,8 +90,6 @@ namespace Topshelf.FileSystemWatcher
 
             return eventHandler;
         }
-
-        #endregion
 
         private static void BeforeStartingService<T>(ServiceConfigurator<T> configurator,
             IEnumerable<FileSystemWatcherConfigurator.DirectoryConfiguration> configs, LogWriter log,

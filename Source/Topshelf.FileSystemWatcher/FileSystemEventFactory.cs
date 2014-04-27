@@ -9,7 +9,7 @@ namespace Topshelf.FileSystemWatcher
     {
         public static TopshelfFileSystemEventArgs CreateNormalFileSystemEvent(FileSystemEventArgs fileSystemEventArgs)
         {
-            return new TopshelfFileSystemEventArgs(fileSystemEventArgs.ChangeType, fileSystemEventArgs.FullPath, fileSystemEventArgs.Name, FileSystemEventType.Normal);
+            return new TopshelfFileSystemEventArgs(fileSystemEventArgs.ChangeType, Path.GetDirectoryName(fileSystemEventArgs.FullPath), fileSystemEventArgs.Name, FileSystemEventType.Normal);
         }
 
         public static TopshelfFileSystemEventArgs CreateCurrentStateFileSystemEvent(string directory, string name)

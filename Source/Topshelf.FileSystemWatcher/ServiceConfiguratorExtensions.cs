@@ -168,7 +168,7 @@ namespace Topshelf.FileSystemWatcher
                         {
                             foreach (string path in paths)
                             {
-                                fileSystemChanged(FileSystemEventFactory.CreateCurrentStateFileSystemEvent(path, Path.GetFileName(path)));
+                                fileSystemChanged(FileSystemEventFactory.CreateCurrentStateFileSystemEvent(Path.GetDirectoryName(path), Path.GetFileName(path)));
                             }
                         }
                     }

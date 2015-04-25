@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using Quartz;
 using Quartz.Impl;
@@ -51,12 +52,16 @@ namespace Topshelf.SimpleInjector.Quartz
             }
 
             container.RegisterSingle<ISchedulerFactory>(schedulerFactory);
-            container.RegisterSingle<IScheduler>(() =>
+
+            if (!Environment.GetCommandLineArgs().Any(x => x.ToLower().Contains("install") || x.ToLower().Contains("uninstall")))
             {
-                IScheduler scheduler = schedulerFactory.GetScheduler();
-                scheduler.JobFactory = container.GetInstance<IJobFactory>();
-                return scheduler;
-            });
+                container.RegisterSingle<IScheduler>(() =>
+                {
+                    IScheduler scheduler = schedulerFactory.GetScheduler();
+                    scheduler.JobFactory = container.GetInstance<IJobFactory>();
+                    return scheduler;
+                });
+            }
 
             Func<IScheduler> schedulerFunc = () => container.GetInstance<IScheduler>();
 

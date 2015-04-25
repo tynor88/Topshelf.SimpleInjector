@@ -1,1 +1,1 @@
-NuGet Pack .\Source\Topshelf.FileSystemWatcher\Topshelf.FileSystemWatcher.csproj -OutputDirectory PublishedNugetPackages\
+NuGet Pack ..\Source\Topshelf.FileSystemWatcher\Topshelf.FileSystemWatcher.csproj -OutputDirectory ..\PublishedNugetPackages\

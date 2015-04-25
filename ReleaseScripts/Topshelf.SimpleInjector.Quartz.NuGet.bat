@@ -1,1 +1,1 @@
-NuGet Pack .\Source\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj -OutputDirectory PublishedNugetPackages\
+NuGet Pack ..\Source\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj -OutputDirectory ..\PublishedNugetPackages\

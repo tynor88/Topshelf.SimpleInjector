@@ -1,0 +1,10 @@
+language: csharp
+solution: Topshelf.SimpleInjector.sln
+install:
+  - nuget restore Topshelf.SimpleInjector.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release Topshelf.SimpleInjector.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/Topshelf.SimpleInjector.Test/bin/Release/Topshelf.SimpleInjector.Test.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/Topshelf.SimpleInjector.Quartz.Test/bin/Release/Topshelf.SimpleInjector.Quartz.Test.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/Topshelf.FileSystemWatcher.Test/bin/Release/Topshelf.FileSystemWatcher.Test.dll

@@ -35,7 +35,8 @@ namespace Topshelf.SimpleInjector.Quartz.Factory
                 where !type.IsAbstract && !type.IsGenericTypeDefinition
                 let ctor = container.Options.ConstructorResolutionBehavior.GetConstructor(typeof(IJob), type)
                 let typeIsDecorator = ctor.GetParameters().Any(p => p.ParameterType == typeof(IJob))
-                where !typeIsDecorator
+                let typeIsDecorateeFactory = ctor.GetParameters().Any(p => p.ParameterType == typeof(Func<IJob>))
+                where !typeIsDecorator && !typeIsDecorateeFactory
                 let producer = Lifestyle.Transient.CreateProducer(typeof(IJob), type, container)
                 select new { type, producer }).ToDictionary(t => t.type, t => t.producer);
         }

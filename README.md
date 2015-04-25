@@ -1,4 +1,4 @@
-Topshelf.SimpleInjector
+Topshelf.SimpleInjector [![Build Status](https://travis-ci.org/tynor88/Topshelf.SimpleInjector.svg?branch=master)](https://travis-ci.org/tynor88/Topshelf.SimpleInjector)
 =======================
 
 Put your apps on the Topshelf, with the power of SimpleInjector! Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.

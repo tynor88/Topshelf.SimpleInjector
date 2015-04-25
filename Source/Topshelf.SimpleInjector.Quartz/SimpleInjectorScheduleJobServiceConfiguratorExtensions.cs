@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
@@ -10,15 +11,15 @@ namespace Topshelf.SimpleInjector.Quartz
 {
     public static class SimpleInjectorScheduleJobServiceConfiguratorExtensions
     {
-        public static ServiceConfigurator<T> UseQuartzSimpleInjector<T>(this ServiceConfigurator<T> configurator)
+        public static ServiceConfigurator<T> UseQuartzSimpleInjector<T>(this ServiceConfigurator<T> configurator, params Assembly[] jobAssemblies)
             where T : class
         {
-            SetupQuartzSimpleInjector();
+            SetupQuartzSimpleInjector(jobAssemblies);
 
             return configurator;
         }
 
-        internal static void SetupQuartzSimpleInjector()
+        internal static void SetupQuartzSimpleInjector(params Assembly[] jobAssemblies)
         {
             var log = HostLogger.Get(typeof(SimpleInjectorScheduleJobServiceConfiguratorExtensions));
 
@@ -29,7 +30,7 @@ namespace Topshelf.SimpleInjector.Quartz
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
-            container.RegisterSingle<IJobFactory, SimpleInjectorJobFactory>();
+            container.RegisterSingle<IJobFactory>(new SimpleInjectorJobFactory(container, jobAssemblies));
             container.RegisterSingle<ISchedulerFactory>(schedulerFactory);
             container.RegisterSingle<IScheduler>(() =>
             {

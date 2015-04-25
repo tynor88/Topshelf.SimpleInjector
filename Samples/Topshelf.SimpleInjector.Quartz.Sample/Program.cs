@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Quartz;
 using SimpleInjector;
 
@@ -18,7 +19,7 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
 
             HostFactory.Run(config =>
             {
-                config.UseQuartzSimpleInjector(_container);
+                config.UseQuartzSimpleInjector(_container, Assembly.GetExecutingAssembly());
 
                 //Check container for errors
                 _container.Verify();
@@ -84,21 +85,6 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
             public void TestInjected()
             {
                 Console.WriteLine("[" + typeof(SampleDependency).Name + "] Triggered " + DateTime.Now.ToLongTimeString());
-            }
-        }
-
-        public class SampleJob : IJob
-        {
-            private readonly ISampleDependency _sampleDependency;
-
-            public SampleJob(ISampleDependency sampleDependency)
-            {
-                _sampleDependency = sampleDependency;
-            }
-
-            public void Execute(IJobExecutionContext context)
-            {
-                _sampleDependency.TestInjected();
             }
         }
 

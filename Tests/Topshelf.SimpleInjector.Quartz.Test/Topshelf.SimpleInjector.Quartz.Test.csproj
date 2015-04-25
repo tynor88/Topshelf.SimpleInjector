@@ -70,10 +70,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Topshelf.3.1.4\lib\net40-full\Topshelf.dll</HintPath>
     </Reference>
-    <Reference Include="Topshelf.SimpleInjector, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Topshelf.SimpleInjector.0.1.2.0\lib\net45\Topshelf.SimpleInjector.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TopshelfSimpleInjectorQuartzTest.cs" />
@@ -83,6 +79,10 @@
     <ProjectReference Include="..\..\Source\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj">
       <Project>{2fa9135c-12ad-47ce-9a46-4b5bdc1e6032}</Project>
       <Name>Topshelf.SimpleInjector.Quartz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Source\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj">
+      <Project>{b4e07581-5fff-404d-8bbe-6e0b19ef00b6}</Project>
+      <Name>Topshelf.SimpleInjector</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

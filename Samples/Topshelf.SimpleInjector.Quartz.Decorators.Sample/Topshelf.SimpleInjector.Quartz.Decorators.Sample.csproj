@@ -35,22 +35,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging">
-      <HintPath>..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
+      <HintPath>..\..\packages\Common.Logging.3.1.0\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging.Core">
-      <HintPath>..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
+      <HintPath>..\..\packages\Common.Logging.Core.3.1.0\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
-      <HintPath>..\packages\Quartz.2.3.2\lib\net40\Quartz.dll</HintPath>
+      <HintPath>..\..\packages\Quartz.2.3.2\lib\net40\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="SimpleInjector">
-      <HintPath>..\packages\SimpleInjector.2.7.3\lib\net45\SimpleInjector.dll</HintPath>
+      <HintPath>..\..\packages\SimpleInjector.2.7.3\lib\net45\SimpleInjector.dll</HintPath>
     </Reference>
     <Reference Include="SimpleInjector.Diagnostics">
-      <HintPath>..\packages\SimpleInjector.2.7.3\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
+      <HintPath>..\..\packages\SimpleInjector.2.7.3\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="SimpleInjector.Extensions.LifetimeScoping">
-      <HintPath>..\packages\SimpleInjector.Extensions.LifetimeScoping.2.7.3\lib\net40-client\SimpleInjector.Extensions.LifetimeScoping.dll</HintPath>
+      <HintPath>..\..\packages\SimpleInjector.Extensions.LifetimeScoping.2.7.3\lib\net40-client\SimpleInjector.Extensions.LifetimeScoping.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -60,7 +60,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Topshelf">
-      <HintPath>..\packages\Topshelf.3.1.4\lib\net40-full\Topshelf.dll</HintPath>
+      <HintPath>..\..\packages\Topshelf.3.1.4\lib\net40-full\Topshelf.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +74,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Source\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj">
+    <ProjectReference Include="..\..\Source\Topshelf.SimpleInjector.Quartz\Topshelf.SimpleInjector.Quartz.csproj">
       <Project>{2fa9135c-12ad-47ce-9a46-4b5bdc1e6032}</Project>
       <Name>Topshelf.SimpleInjector.Quartz</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Source\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj">
+    <ProjectReference Include="..\..\Source\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj">
       <Project>{b4e07581-5fff-404d-8bbe-6e0b19ef00b6}</Project>
       <Name>Topshelf.SimpleInjector</Name>
     </ProjectReference>

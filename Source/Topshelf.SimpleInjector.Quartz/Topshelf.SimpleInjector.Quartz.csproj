@@ -80,6 +80,7 @@
     <Compile Include="QuartzConfigurator.cs" />
     <Compile Include="ScheduleJobHostConfiguratorExtensions.cs" />
     <Compile Include="ScheduleJobServiceConfiguratorExtensions.cs" />
+    <Compile Include="SimpleInjectorDecoratorJobFactory.cs" />
     <Compile Include="SimpleInjectorScheduleJobServiceConfiguratorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleInjectorJobFactory.cs" />

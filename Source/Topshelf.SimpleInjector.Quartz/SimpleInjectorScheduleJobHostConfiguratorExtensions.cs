@@ -1,17 +1,16 @@
-﻿using System.Reflection;
-using SimpleInjector;
+﻿using SimpleInjector;
 using Topshelf.HostConfigurators;
 
 namespace Topshelf.SimpleInjector.Quartz
 {
     public static class SimpleInjectorScheduleJobHostConfiguratorExtensions
     {
-        public static HostConfigurator UseQuartzSimpleInjector(this HostConfigurator configurator, Container container, params Assembly[] jobAssemblies)
+        public static HostConfigurator UseQuartzSimpleInjector(this HostConfigurator configurator, Container container)
         {
             // Pass it to Topshelf
             configurator.UseSimpleInjector(container);
 
-            SimpleInjectorScheduleJobServiceConfiguratorExtensions.SetupQuartzSimpleInjector(jobAssemblies);
+            SimpleInjectorScheduleJobServiceConfiguratorExtensions.SetupQuartzSimpleInjector();
 
             return configurator;
         }

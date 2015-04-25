@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Quartz;
 using SimpleInjector;
 
@@ -19,7 +18,7 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
 
             HostFactory.Run(config =>
             {
-                config.UseQuartzSimpleInjector(_container, Assembly.GetExecutingAssembly());
+                config.UseQuartzSimpleInjector(_container);
 
                 //Check container for errors
                 _container.Verify();

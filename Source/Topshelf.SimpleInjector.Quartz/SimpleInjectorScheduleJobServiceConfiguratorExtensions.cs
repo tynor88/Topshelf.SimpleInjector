@@ -11,10 +11,10 @@ namespace Topshelf.SimpleInjector.Quartz
 {
     public static class SimpleInjectorScheduleJobServiceConfiguratorExtensions
     {
-        public static ServiceConfigurator<T> UseQuartzSimpleInjector<T>(this ServiceConfigurator<T> configurator, params Assembly[] jobAssemblies)
+        public static ServiceConfigurator<T> UseQuartzSimpleInjector<T>(this ServiceConfigurator<T> configurator)
             where T : class
         {
-            SetupQuartzSimpleInjector(jobAssemblies);
+            SetupQuartzSimpleInjector();
 
             return configurator;
         }
@@ -30,7 +30,7 @@ namespace Topshelf.SimpleInjector.Quartz
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
-            container.RegisterSingle<IJobFactory>(new SimpleInjectorJobFactory(container, jobAssemblies));
+            container.RegisterSingle<IJobFactory>(new SimpleInjectorJobFactory(container));
             container.RegisterSingle<ISchedulerFactory>(schedulerFactory);
             container.RegisterSingle<IScheduler>(() =>
             {

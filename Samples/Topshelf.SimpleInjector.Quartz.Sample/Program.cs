@@ -16,7 +16,7 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
             _container.Register<ISampleDependency, SampleDependency>();
             //This does not need to be explicitly registered
             _container.Register<SampleService>();
-            //_container.Register<IDependencyInjected, DependencyInjected>();
+            _container.Register<IDependencyInjected, DependencyInjected>();
 
             //Register all IJob implementations that are not generic, abstract nor decorators
             Type[] jobTypes =

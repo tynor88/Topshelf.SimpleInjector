@@ -87,7 +87,6 @@
     <Compile Include="SimpleInjectorScheduleJobHostConfiguratorExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Topshelf.SimpleInjector.Quartz.nuspec">
       <SubType>Designer</SubType>

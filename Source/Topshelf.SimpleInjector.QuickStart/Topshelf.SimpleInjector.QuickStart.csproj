@@ -70,7 +70,6 @@
     <Compile Include="Content\Service.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Topshelf.SimpleInjector.QuickStart.nuspec" />
   </ItemGroup>

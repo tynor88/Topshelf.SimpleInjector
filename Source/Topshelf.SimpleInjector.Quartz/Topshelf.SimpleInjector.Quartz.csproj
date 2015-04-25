@@ -76,14 +76,14 @@
     <Compile Include="..\AssemblyVersion.cs">
       <Link>Properties\AssemblyVersion.cs</Link>
     </Compile>
+    <Compile Include="Factory\SimpleInjectorDecoratorJobFactory.cs" />
+    <Compile Include="Factory\SimpleInjectorJobFactory.cs" />
     <Compile Include="NullService.cs" />
     <Compile Include="QuartzConfigurator.cs" />
     <Compile Include="ScheduleJobHostConfiguratorExtensions.cs" />
     <Compile Include="ScheduleJobServiceConfiguratorExtensions.cs" />
-    <Compile Include="SimpleInjectorDecoratorJobFactory.cs" />
     <Compile Include="SimpleInjectorScheduleJobServiceConfiguratorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleInjectorJobFactory.cs" />
     <Compile Include="SimpleInjectorScheduleJobHostConfiguratorExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

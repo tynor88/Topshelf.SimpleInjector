@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using Quartz;
 using SimpleInjector;
 
@@ -14,7 +16,33 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
             _container.Register<ISampleDependency, SampleDependency>();
             //This does not need to be explicitly registered
             _container.Register<SampleService>();
-            _container.Register<IDependencyInjected, DependencyInjected>();
+            //_container.Register<IDependencyInjected, DependencyInjected>();
+
+            //Register all IJob implementations that are not generic, abstract nor decorators
+            Type[] jobTypes =
+                Assembly.GetExecutingAssembly()
+                    .GetTypes()
+                    .Where(type => typeof(IJob).IsAssignableFrom(type))
+                    .Where(type => !type.IsAbstract && !type.IsGenericTypeDefinition)
+                    .Select(
+                        type =>
+                            new
+                            {
+                                type,
+                                ctor = _container.Options.ConstructorResolutionBehavior.GetConstructor(typeof(IJob), type)
+                            })
+                    .Select(
+                        type =>
+                            new
+                            {
+                                type.type,
+                                typeIsDecorator = type.ctor.GetParameters().Any(p => p.ParameterType == typeof(IJob))
+                            })
+                    .Where(type => !type.typeIsDecorator)
+                    .Select(x => x.type)
+                    .ToArray();
+
+            _container.RegisterAll<IJob>(jobTypes);
 
             HostFactory.Run(config =>
             {

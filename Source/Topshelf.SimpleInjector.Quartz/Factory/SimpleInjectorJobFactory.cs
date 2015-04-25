@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using System.Globalization;
 using Quartz;
 using Quartz.Spi;
 using SimpleInjector;
 
-namespace Topshelf.SimpleInjector.Quartz
+namespace Topshelf.SimpleInjector.Quartz.Factory
 {
     /// <summary>
     /// Factory to make it possible to inject dependencies to Quartz jobs (IJob implementations) with SimpleInjector
     /// </summary>
-    public class SimpleInjectorDecoratorJobFactory : IJobFactory
+    public class SimpleInjectorJobFactory : IJobFactory
     {
         #region Private Fields
 
-        private readonly Dictionary<Type, InstanceProducer> jobProducers;
+        private readonly Container _container;
 
         #endregion
 
@@ -25,19 +23,9 @@ namespace Topshelf.SimpleInjector.Quartz
         /// Instantiate a new SimpleInjectorJobFactory which is able to produce IJob implementations
         /// </summary>
         /// <param name="container">The SimpleInjector Container to resolve IJob implementations from</param>
-        /// <param name="assemblies">The assembly where the IJobs are located</param>
-        public SimpleInjectorDecoratorJobFactory(Container container, params Assembly[] assemblies)
+        public SimpleInjectorJobFactory(Container container)
         {
-            this.jobProducers = (
-                from assembly in assemblies
-                from type in assembly.GetTypes()
-                where typeof(IJob).IsAssignableFrom(type)
-                where !type.IsAbstract && !type.IsGenericTypeDefinition
-                let ctor = container.Options.ConstructorResolutionBehavior.GetConstructor(typeof(IJob), type)
-                let typeIsDecorator = ctor.GetParameters().Any(p => p.ParameterType == typeof(IJob))
-                where !typeIsDecorator
-                let producer = Lifestyle.Transient.CreateProducer(typeof(IJob), type, container)
-                select new { type, producer }).ToDictionary(t => t.type, t => t.producer);
+            _container = container;
         }
 
         #endregion
@@ -57,7 +45,20 @@ namespace Topshelf.SimpleInjector.Quartz
         /// with instantiating the Job.</remarks>
         public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
-            return (IJob)this.jobProducers[bundle.JobDetail.JobType].GetInstance();
+            IJobDetail jobDetail = bundle.JobDetail;
+            Type jobType = jobDetail.JobType;
+
+            try
+            {
+                // Return job registered in container
+                return (IJob)_container.GetInstance(jobType);
+            }
+            catch (Exception ex)
+            {
+                throw new SchedulerConfigException(string.Format(CultureInfo.InvariantCulture,
+                    "Failed to instantiate Job '{0}' of type '{1}'",
+                    bundle.JobDetail.Key, bundle.JobDetail.JobType), ex);
+            }
         }
 
         /// <summary>

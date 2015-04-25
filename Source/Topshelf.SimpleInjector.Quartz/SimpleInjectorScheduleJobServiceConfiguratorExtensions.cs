@@ -6,6 +6,7 @@ using Quartz.Spi;
 using SimpleInjector;
 using Topshelf.Logging;
 using Topshelf.ServiceConfigurators;
+using Topshelf.SimpleInjector.Quartz.Factory;
 
 namespace Topshelf.SimpleInjector.Quartz
 {
@@ -19,7 +20,17 @@ namespace Topshelf.SimpleInjector.Quartz
             return configurator;
         }
 
+        internal static void SetupQuartzSimpleInjector()
+        {
+            RegisterQuartzInSimpleInjector();
+        }
+
         internal static void SetupQuartzSimpleInjector(params Assembly[] jobAssemblies)
+        {
+            RegisterQuartzInSimpleInjector(jobAssemblies);
+        }
+
+        private static void RegisterQuartzInSimpleInjector(Assembly[] jobAssemblies = null)
         {
             var log = HostLogger.Get(typeof(SimpleInjectorScheduleJobServiceConfiguratorExtensions));
 
@@ -30,7 +41,15 @@ namespace Topshelf.SimpleInjector.Quartz
 
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
-            container.RegisterSingle<IJobFactory>(new SimpleInjectorJobFactory(container));
+            if (jobAssemblies == null)
+            {
+                container.RegisterSingle<IJobFactory>(new SimpleInjectorJobFactory(container));
+            }
+            else
+            {
+                container.RegisterSingle<IJobFactory>(new SimpleInjectorDecoratorJobFactory(container, jobAssemblies));
+            }
+
             container.RegisterSingle<ISchedulerFactory>(schedulerFactory);
             container.RegisterSingle<IScheduler>(() =>
             {

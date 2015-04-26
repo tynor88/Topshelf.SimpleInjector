@@ -1,4 +1,4 @@
-Topshelf.SimpleInjector [![Build Status](https://travis-ci.org/tynor88/Topshelf.SimpleInjector.svg?branch=master)](https://travis-ci.org/tynor88/Topshelf.SimpleInjector) [![NuGet Version](http://img.shields.io/nuget/v/Nancy.svg?style=flat)](https://www.nuget.org/packages/Topshelf.SimpleInjector/) [![NuGet Downloads](http://img.shields.io/nuget/dt/Nancy.svg?style=flat)](https://www.nuget.org/packages/Topshelf.SimpleInjector/)
+Topshelf.SimpleInjector [![Build Status](https://travis-ci.org/tynor88/Topshelf.SimpleInjector.svg?branch=master)](https://travis-ci.org/tynor88/Topshelf.SimpleInjector) [![NuGet Version](http://img.shields.io/nuget/v/Topshelf.SimpleInjector.svg?style=flat)](https://www.nuget.org/packages/Topshelf.SimpleInjector/) [![NuGet Downloads](http://img.shields.io/nuget/dt/Topshelf.SimpleInjector.svg?style=flat)](https://www.nuget.org/packages/Topshelf.SimpleInjector/)
 =======================
 
 Put your apps on the Topshelf, with the power of SimpleInjector! Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.

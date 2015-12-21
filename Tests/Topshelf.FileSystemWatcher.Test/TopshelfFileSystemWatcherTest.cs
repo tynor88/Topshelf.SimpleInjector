@@ -401,7 +401,7 @@ namespace Topshelf.FileSystemWatcher.Test
         }
     }
 
-    class MyService : ServiceControl
+    internal class MyService : ServiceControl
     {
         public bool Start(HostControl hostControl)
         {

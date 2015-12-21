@@ -53,7 +53,7 @@ namespace Topshelf.SimpleInjector.Quartz
 
             container.RegisterSingleton<ISchedulerFactory>(schedulerFactory);
 
-            if (!Environment.GetCommandLineArgs().Any(x => x.ToLower().Contains("install") || x.ToLower().Contains("uninstall")))
+            if (!Environment.GetCommandLineArgs().Any(x => x.ToLower() == "install" || x.ToLower() == "uninstall"))
             {
                 container.RegisterSingleton<IScheduler>(() =>
                 {

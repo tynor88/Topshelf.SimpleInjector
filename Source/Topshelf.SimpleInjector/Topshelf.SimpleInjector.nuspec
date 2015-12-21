@@ -15,7 +15,7 @@
     <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host</tags>
     <dependencies>
       <dependency id="SimpleInjector" version="2.7.3" />
-      <dependency id="Topshelf" version="3.1.4" />
+      <dependency id="Topshelf" version="3.3.1" />
     </dependencies>
   </metadata>
 </package>

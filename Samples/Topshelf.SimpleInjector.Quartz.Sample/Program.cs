@@ -42,7 +42,7 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
                     .Select(x => x.type)
                     .ToArray();
 
-            _container.RegisterAll<IJob>(jobTypes);
+            _container.RegisterCollection<IJob>(jobTypes);
 
             HostFactory.Run(config =>
             {

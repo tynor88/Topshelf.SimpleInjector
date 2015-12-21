@@ -44,18 +44,18 @@ namespace Topshelf.SimpleInjector.Quartz
 
             if (jobAssemblies == null)
             {
-                container.RegisterSingle<IJobFactory>(new SimpleInjectorJobFactory(container));
+                container.RegisterSingleton<IJobFactory>(new SimpleInjectorJobFactory(container));
             }
             else
             {
-                container.RegisterSingle<IJobFactory>(new SimpleInjectorDecoratorJobFactory(container, jobAssemblies));
+                container.RegisterSingleton<IJobFactory>(new SimpleInjectorDecoratorJobFactory(container, jobAssemblies));
             }
 
-            container.RegisterSingle<ISchedulerFactory>(schedulerFactory);
+            container.RegisterSingleton<ISchedulerFactory>(schedulerFactory);
 
             if (!Environment.GetCommandLineArgs().Any(x => x.ToLower().Contains("install") || x.ToLower().Contains("uninstall")))
             {
-                container.RegisterSingle<IScheduler>(() =>
+                container.RegisterSingleton<IScheduler>(() =>
                 {
                     IScheduler scheduler = schedulerFactory.GetScheduler();
                     scheduler.JobFactory = container.GetInstance<IJobFactory>();

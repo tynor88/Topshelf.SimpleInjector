@@ -23,7 +23,7 @@ namespace Topshelf.SimpleInjector.Quartz.Test
         {
             //Arrange
             Mock<IJob> testJobMock = new Mock<IJob>();
-            _container.RegisterSingle<IJob>(() => testJobMock.Object);
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
             _container.Register<ISampleDependency, SampleDependency>();
 
             //Act
@@ -56,7 +56,7 @@ namespace Topshelf.SimpleInjector.Quartz.Test
         {
             //Arrange
             Mock<IJob> testJobMock = new Mock<IJob>();
-            _container.RegisterSingle<IJob>(() => testJobMock.Object);
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
             _container.Register<ISampleDependency, SampleDependency>();
             Mock<IJobFactory> factoryMock = new Mock<IJobFactory>();
 

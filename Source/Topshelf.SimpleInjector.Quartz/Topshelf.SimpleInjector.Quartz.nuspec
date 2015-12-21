@@ -15,7 +15,7 @@
     <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host Quartz Quartz.NET Scheduling Schedule Cron</tags>
     <dependencies>
       <dependency id="Topshelf.SimpleInjector" version="0.1.4.0" />
-      <dependency id="Quartz" version="2.3.2" />
+      <dependency id="Quartz" version="2.3.3" />
     </dependencies>
   </metadata>
 </package>

@@ -13,7 +13,7 @@ namespace Topshelf.SimpleInjector.Quartz
         private static IScheduler Scheduler;
         internal static IJobFactory JobFactory;
 
-        public static Func<IScheduler> SchedulerFactory { get; set; }
+        internal static Func<IScheduler> SchedulerFactory { get; set; }
 
         private static IScheduler GetScheduler()
         {

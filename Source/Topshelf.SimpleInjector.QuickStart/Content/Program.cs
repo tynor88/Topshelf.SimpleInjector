@@ -1,6 +1,6 @@
 ﻿using SimpleInjector;
 
-namespace Topshelf.SimpleInjector.QuickStart
+namespace Topshelf.SimpleInjector.QuickStart.Content
 {
     class Program
     {

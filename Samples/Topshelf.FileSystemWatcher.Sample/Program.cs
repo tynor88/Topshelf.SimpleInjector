@@ -3,11 +3,11 @@ using System.IO;
 
 namespace Topshelf.FileSystemWatcher.Sample
 {
-    class Program
+    internal class Program
     {
         private static readonly string _testDir = Directory.GetCurrentDirectory() + @"\test\";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             HostFactory.Run(config =>
             {

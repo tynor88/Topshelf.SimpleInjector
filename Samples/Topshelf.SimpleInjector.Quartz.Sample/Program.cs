@@ -6,11 +6,11 @@ using SimpleInjector;
 
 namespace Topshelf.SimpleInjector.Quartz.Sample
 {
-    class Program
+    internal class Program
     {
         private static readonly Container _container = new Container();
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //Register services
             _container.Register<ISampleDependency, SampleDependency>();

@@ -2,15 +2,14 @@
 using System.Reflection;
 using Quartz;
 using SimpleInjector;
-using SimpleInjector.Extensions;
 
 namespace Topshelf.SimpleInjector.Quartz.Decorators.Sample
 {
-    class Program
+    internal class Program
     {
         private static readonly Container _container = new Container();
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             _container.Register<IDependencyInjected, DependencyInjected>();
             _container.RegisterDecorator(typeof(IJob), typeof(LoggingDecorator));

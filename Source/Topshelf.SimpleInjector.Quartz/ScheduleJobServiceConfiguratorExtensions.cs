@@ -75,7 +75,7 @@ namespace Topshelf.SimpleInjector.Quartz
                             foreach (var trigger in triggersForJob)
                                 log.Info(string.Format("[Topshelf.Quartz] Job Schedule: {0} - Next Fire Time (local): {1}", trigger, trigger.GetNextFireTimeUtc().HasValue ? trigger.GetNextFireTimeUtc().Value.ToLocalTime().ToString() : "none"));
 
-                            if (Scheduler != null && !Scheduler.IsStarted)
+                            if (!Scheduler.IsStarted)
                             {
                                 Scheduler.Start();
                                 log.Info("[Topshelf.Quartz] Scheduler started...");

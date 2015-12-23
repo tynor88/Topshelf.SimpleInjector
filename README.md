@@ -3,6 +3,10 @@ Topshelf.SimpleInjector [![Build Status](https://travis-ci.org/tynor88/Topshelf.
 
 Put your apps on the Topshelf, with the power of SimpleInjector! Topshelf.SimpleInjector provides extensions to construct your Topshelf service class from the SimpleInjector IoC container.
 
+Project Status [![Stories in Ready](https://badge.waffle.io/tynor88/Topshelf.SimpleInjector.svg?label=ready&title=Ready)](http://waffle.io/tynor88/Topshelf.SimpleInjector)
+=======================
+[![Throughput Graph](https://graphs.waffle.io/tynor88/Topshelf.SimpleInjector/throughput.svg)](https://waffle.io/tynor88/Topshelf.SimpleInjector/metrics)
+
 Install
 =======================
 You can find the package on [NuGet Gallery](https://www.nuget.org/packages/Topshelf.SimpleInjector/).

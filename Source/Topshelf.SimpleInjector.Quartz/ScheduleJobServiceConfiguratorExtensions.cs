@@ -53,7 +53,7 @@ namespace Topshelf.SimpleInjector.Quartz
             var jobConfig = new QuartzConfigurator();
             jobConfigurator(jobConfig);
 
-            if (jobConfig.JobEnabled == null || jobConfig.JobEnabled() || (jobConfig.Job == null || jobConfig.Triggers == null))
+            if (jobConfig.JobEnabled == null || jobConfig.JobEnabled() || jobConfig.Job == null || jobConfig.Triggers == null)
             {
                 var jobDetail = jobConfig.Job();
                 var jobTriggers = jobConfig.Triggers.Select(triggerFactory => triggerFactory()).Where(trigger => trigger != null);
@@ -64,19 +64,33 @@ namespace Topshelf.SimpleInjector.Quartz
                     if (Scheduler == null)
                         Scheduler = GetScheduler();
 
-                    if (Scheduler != null && jobDetail != null && jobTriggers.Any())
+                    if (Scheduler != null)
                     {
-                        var triggersForJob = new HashSet<ITrigger>(jobTriggers);
-                        Scheduler.ScheduleJob(jobDetail, triggersForJob, false);
-                        log.Info(string.Format("[Topshelf.Quartz] Scheduled Job: {0}", jobDetail.Key));
-
-                        foreach (var trigger in triggersForJob)
-                            log.Info(string.Format("[Topshelf.Quartz] Job Schedule: {0} - Next Fire Time (local): {1}", trigger, trigger.GetNextFireTimeUtc().HasValue ? trigger.GetNextFireTimeUtc().Value.ToLocalTime().ToString() : "none"));
-
-                        if (Scheduler != null && !Scheduler.IsStarted)
+                        if (jobDetail != null && jobTriggers.Any())
                         {
-                            Scheduler.Start();
-                            log.Info("[Topshelf.Quartz] Scheduler started...");
+                            var triggersForJob = new HashSet<ITrigger>(jobTriggers);
+                            Scheduler.ScheduleJob(jobDetail, triggersForJob, false);
+                            log.Info(string.Format("[Topshelf.Quartz] Scheduled Job: {0}", jobDetail.Key));
+
+                            foreach (var trigger in triggersForJob)
+                                log.Info(string.Format("[Topshelf.Quartz] Job Schedule: {0} - Next Fire Time (local): {1}", trigger, trigger.GetNextFireTimeUtc().HasValue ? trigger.GetNextFireTimeUtc().Value.ToLocalTime().ToString() : "none"));
+
+                            if (Scheduler != null && !Scheduler.IsStarted)
+                            {
+                                Scheduler.Start();
+                                log.Info("[Topshelf.Quartz] Scheduler started...");
+                            }
+                        }
+
+                        foreach (Tuple<Func<IJobListener>, IMatcher<JobKey>[]> jobListenerTuple in jobConfig.JobListeners)
+                        {
+                            IJobListener jobListener = jobListenerTuple.Item1();
+                            IMatcher<JobKey>[] keyEquals = jobListenerTuple.Item2;
+
+                            if (jobListener != null)
+                            {
+                                Scheduler.ListenerManager.AddJobListener(jobListener, keyEquals);
+                            }
                         }
                     }
 

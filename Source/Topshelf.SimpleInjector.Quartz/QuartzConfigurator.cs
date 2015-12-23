@@ -10,6 +10,7 @@ namespace Topshelf.SimpleInjector.Quartz
         #region Private Fields
 
         private ICollection<Func<ITrigger>> _triggers;
+        private ICollection<Tuple<Func<IJobListener>, IMatcher<JobKey>[]>> _jobListeners;
 
         #endregion
 
@@ -23,16 +24,13 @@ namespace Topshelf.SimpleInjector.Quartz
             set { _triggers = value; }
         }
 
-        public Func<bool> JobEnabled { get; private set; }
-
-        #endregion
-
-        #region Constructor
-
-        public QuartzConfigurator()
+        public ICollection<Tuple<Func<IJobListener>, IMatcher<JobKey>[]>> JobListeners
         {
-            Triggers = new Collection<Func<ITrigger>>();
+            get { return _jobListeners ?? (_jobListeners = new Collection<Tuple<Func<IJobListener>, IMatcher<JobKey>[]>>()); }
+            set { _jobListeners = value; }
         }
+
+        public Func<bool> JobEnabled { get; private set; }
 
         #endregion
 
@@ -53,6 +51,12 @@ namespace Topshelf.SimpleInjector.Quartz
         public QuartzConfigurator EnableJobWhen(Func<bool> jobEnabled)
         {
             JobEnabled = jobEnabled;
+            return this;
+        }
+
+        public QuartzConfigurator AddJobListener(Func<IJobListener> jobListener, params IMatcher<JobKey>[] keyEquals)
+        {
+            JobListeners.Add(Tuple.Create(jobListener, keyEquals));
             return this;
         }
 

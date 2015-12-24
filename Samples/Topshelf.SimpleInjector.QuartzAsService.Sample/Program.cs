@@ -1,5 +1,6 @@
 ﻿using System;
 using Quartz;
+using Quartz.Impl.Matchers;
 using SimpleInjector;
 using Topshelf.SimpleInjector.Quartz;
 
@@ -11,30 +12,41 @@ namespace Topshelf.SimpleInjector.QuartzAsService.Sample
 
         private static void Main(string[] args)
         {
-            //Register services
-            _container.Register<IJob, WithInjectedDependenciesJob>();
-            _container.Register<IDependencyInjected, DependencyInjected>();
-
-            HostFactory.Run(config =>
+            try
             {
-                config.UseQuartzSimpleInjector(_container);
+                //Register services
+                _container.Register<IJob, WithInjectedDependenciesJob>();
+                _container.Register<IDependencyInjected, DependencyInjected>();
 
-                //Check container for errors
-                _container.Verify();
+                var jobWithListener = "jobWithListener";
+                var jobKey = new JobKey(jobWithListener);
 
-                config.ScheduleQuartzJobAsService(configurator =>
-                    configurator.WithJob(
-                        () =>
-                            JobBuilder.Create<WithInjectedDependenciesJob>()
-                                .WithIdentity("WithInjectedDependenciesJob")
-                                .Build())
-                        .AddTrigger(
+                HostFactory.Run(config =>
+                {
+                    config.UseQuartzSimpleInjector(_container);
+
+                    //Check container for errors
+                    _container.Verify();
+
+                    config.ScheduleQuartzJobAsService(configurator =>
+                        configurator.WithJob(
                             () =>
-                                TriggerBuilder.Create()
-                                    .WithSimpleSchedule(
-                                        builder =>
-                                            builder.WithIntervalInSeconds(1).RepeatForever()).Build()));
-            });
+                                JobBuilder.Create<WithInjectedDependenciesJob>()
+                                    .WithIdentity(jobKey)
+                                    .Build())
+                            .AddTrigger(
+                                () =>
+                                    TriggerBuilder.Create()
+                                        .WithIdentity(jobWithListener + ".trigger")
+                                        .WithSimpleSchedule(
+                                            builder => builder.WithIntervalInSeconds(1).RepeatForever()).Build())
+                            .AddJobListener(() => new RecurringJobListener(), KeyMatcher<JobKey>.KeyEquals(jobKey)));
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         public class WithInjectedDependenciesJob : IJob
@@ -63,6 +75,25 @@ namespace Topshelf.SimpleInjector.QuartzAsService.Sample
             {
                 Console.WriteLine("[" + typeof(DependencyInjected).Name + "] Triggered " + DateTime.Now.ToLongTimeString());
             }
+        }
+
+        public class RecurringJobListener : IJobListener
+        {
+            public void JobExecutionVetoed(IJobExecutionContext context)
+            {
+            }
+
+            public void JobToBeExecuted(IJobExecutionContext context)
+            {
+                Console.WriteLine("[" + typeof(RecurringJobListener).Name + "] To be executed");
+            }
+
+            public void JobWasExecuted(IJobExecutionContext context, JobExecutionException jobException)
+            {
+                Console.WriteLine("[" + typeof(RecurringJobListener).Name + "] Was executed");
+            }
+
+            public string Name => typeof(RecurringJobListener).Name;
         }
     }
 }

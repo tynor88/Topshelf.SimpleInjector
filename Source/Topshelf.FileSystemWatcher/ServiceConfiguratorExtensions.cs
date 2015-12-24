@@ -105,15 +105,12 @@ namespace Topshelf.FileSystemWatcher
                     {
                         if (config.CreateDir)
                         {
-                            log.Debug(
-                                string.Format("[Topshelf.FileSystemWatcher] Path ({0}) does not exist. Creating...",
-                                    config.Path));
+                            log.Debug($"[Topshelf.FileSystemWatcher] Path ({config.Path}) does not exist. Creating...");
                             Directory.CreateDirectory(config.Path);
                         }
                         else
                         {
-                            throw new DirectoryNotFoundException(config.Path +
-                                                                 " does not exist. Please call CreateDir in the FileSystemWatcherConfigurator, or make sure the dirs exist in the FileSystem");
+                            throw new DirectoryNotFoundException($"{config.Path} does not exist. Please call CreateDir in the FileSystemWatcherConfigurator, or make sure the dirs exist in the FileSystem");
                         }
                     }
 
@@ -129,15 +126,14 @@ namespace Topshelf.FileSystemWatcher
 
                     _watchers.Add(fileSystemWatcher);
 
-                    log.Info(string.Format("[Topshelf.FileSystemWatcher] configured to listen for events in {0}",
-                        config.Path));
+                    log.Info($"[Topshelf.FileSystemWatcher] configured to listen for events in {config.Path}");
 
                     foreach (System.IO.FileSystemWatcher watcher in _watchers)
                     {
                         watcher.EnableRaisingEvents = true;
                     }
 
-                    log.Info(string.Format("[Topshelf.FileSystemWatcher] listening for events"));
+                    log.Info("[Topshelf.FileSystemWatcher] listening for events");
                 }
             });
         }
@@ -152,10 +148,10 @@ namespace Topshelf.FileSystemWatcher
                 {
                     if (config.GetInitialStateEvent)
                     {
-                        log.Info(string.Format("[Topshelf.FileSystemWatcher] Checking for InitialState Events"));
+                        log.Info("[Topshelf.FileSystemWatcher] Checking for InitialState Events");
 
                         string[] paths;
-                        if (config.FileFilter != null && !string.IsNullOrWhiteSpace(config.FileFilter))
+                        if (!string.IsNullOrWhiteSpace(config.FileFilter))
                         {
                             paths = Directory.GetFiles(config.Path, config.FileFilter);
                         }
@@ -190,7 +186,7 @@ namespace Topshelf.FileSystemWatcher
                         fileSystemWatcher.Created -= watcherOnChanged;
                         fileSystemWatcher.Deleted -= watcherOnChanged;
                         fileSystemWatcher.Dispose();
-                        log.Info(string.Format("[Topshelf.FileSystemWatcher] Unsubscribed for FileSystemChange events"));
+                        log.Info("[Topshelf.FileSystemWatcher] Unsubscribed for FileSystemChange events");
                     }
                 }
             });
@@ -207,7 +203,7 @@ namespace Topshelf.FileSystemWatcher
                 NotifyFilter = notifyFilters,
             };
 
-            if (fileFilter != null && !string.IsNullOrWhiteSpace(fileFilter))
+            if (!string.IsNullOrWhiteSpace(fileFilter))
             {
                 watcher.Filter = fileFilter;
             }

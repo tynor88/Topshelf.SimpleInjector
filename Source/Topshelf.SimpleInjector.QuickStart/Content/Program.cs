@@ -2,7 +2,7 @@
 
 namespace Topshelf.SimpleInjector.QuickStart.Content
 {
-    class Program
+    internal class Program
     {
         private static void Main()
         {

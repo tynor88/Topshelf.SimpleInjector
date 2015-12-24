@@ -22,35 +22,35 @@ namespace Topshelf.FileSystemWatcher.Test
         [Test]
         public void FileSystemChangeEventIsInvokedWithOneDirectoryTest()
         {
-                //Arrange
-                Mock<IDelegateMock> onChanged = new Mock<IDelegateMock>();
+            //Arrange
+            Mock<IDelegateMock> onChanged = new Mock<IDelegateMock>();
 
-                //Act
-                var exitCode = HostFactory.Run(config =>
+            //Act
+            var exitCode = HostFactory.Run(config =>
+            {
+                config.UseTestHost();
+
+                config.Service<TopshelfFileSystemWatcherTest>(s =>
                 {
-                    config.UseTestHost();
-
-                    config.Service<TopshelfFileSystemWatcherTest>(s =>
+                    s.ConstructUsing(() => new TopshelfFileSystemWatcherTest());
+                    s.WhenStarted((service, host) =>
                     {
-                        s.ConstructUsing(() => new TopshelfFileSystemWatcherTest());
-                        s.WhenStarted((service, host) =>
-                        {
-                            CreateFile(_testDir + "testFile.Test");
-                            return true;
-                        });
-                        s.WhenStopped((service, host) => true);
-                        s.WhenFileSystemCreated(configurator => configurator.AddDirectory(dir =>
-                        {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
-                            dir.CreateDir = true;
-                            dir.NotifyFilters = NotifyFilters.FileName;
-                        }), onChanged.Object.FileSystemCreated);
+                        CreateFile(_testDir + "testFile.Test");
+                        return true;
                     });
+                    s.WhenStopped((service, host) => true);
+                    s.WhenFileSystemCreated(configurator => configurator.AddDirectory(dir =>
+                    {
+                        dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                        dir.CreateDir = true;
+                        dir.NotifyFilters = NotifyFilters.FileName;
+                    }), onChanged.Object.FileSystemCreated);
                 });
+            });
 
-                //Assert
-                onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Once);
-                Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
+            //Assert
+            onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Once);
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
         [Test]

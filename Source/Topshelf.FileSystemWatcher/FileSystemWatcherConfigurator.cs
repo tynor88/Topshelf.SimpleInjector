@@ -8,10 +8,7 @@ namespace Topshelf.FileSystemWatcher
     public class FileSystemWatcherConfigurator
     {
         private ICollection<Action<DirectoryConfiguration>> _configurations;
-        public ICollection<Action<DirectoryConfiguration>> DirectoryConfigurationAction
-        {
-            get { return _configurations ?? (_configurations = new Collection<Action<DirectoryConfiguration>>()); }
-        }
+        public ICollection<Action<DirectoryConfiguration>> DirectoryConfigurationAction => _configurations ?? (_configurations = new Collection<Action<DirectoryConfiguration>>());
 
         public FileSystemWatcherConfigurator AddDirectory(Action<DirectoryConfiguration> directoryConfiguration)
         {

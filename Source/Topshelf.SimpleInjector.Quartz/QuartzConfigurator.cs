@@ -86,7 +86,7 @@ namespace Topshelf.SimpleInjector.Quartz
                 return this;
             }
 
-            throw new ArgumentException("must specify a valid cron expression", "cronExpression");
+            throw new ArgumentException("must specify a valid cron expression", nameof(cronExpression));
         }
 
         /// <summary>

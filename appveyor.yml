@@ -16,6 +16,8 @@ before_build:
 build:
   parallel: true
   verbosity: minimal
+test:
+  assemblies: '**\*.Test.dll'
 after_test:
 - cmd: >-
     mkdir reports

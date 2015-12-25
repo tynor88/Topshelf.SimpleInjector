@@ -1,0 +1,22 @@
+version: 1.0.0.{build}
+skip_tags: true
+os: Visual Studio 2015
+configuration: Debug
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: ZDPFevPOISOj7KUZ0Duav8gg8iHuLuj5MEeVMpZedcnBdFkBukunzaJJZYGYNeFs
+before_build:
+- cmd: nuget restore
+build:
+  parallel: true
+  verbosity: minimal
+after_test:
+- cmd: >-
+    mkdir reports
+    packages\coveralls.net.0.6.0\tools\csmacnz.Coveralls.exe --opencover -i reports\opencoverCoverage.xml --repoToken %COVERALLS_REPO_TOKEN% --commitBranch %APPVEYOR_REPO_BRANCH%

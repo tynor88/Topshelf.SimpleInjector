@@ -15,7 +15,7 @@ before_build:
 - cmd: nuget restore
 build:
   parallel: true
-  verbosity: minimal
+  verbosity: detailed
 test:
   assemblies: '**\*.Test.dll'
 after_test:

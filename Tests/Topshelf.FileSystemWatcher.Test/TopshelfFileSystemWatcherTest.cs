@@ -19,7 +19,7 @@ namespace Topshelf.FileSystemWatcher.Test
                 Directory.Delete(Directory.GetCurrentDirectory() + _testDir2, true);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void FileSystemChangeEventIsInvokedWithOneDirectoryTest()
         {
             //Arrange
@@ -53,7 +53,7 @@ namespace Topshelf.FileSystemWatcher.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void FileSystemChangeEventsAreInvokedWithMutipleDirectoriesTest()
         {
             //Arrange
@@ -98,7 +98,7 @@ namespace Topshelf.FileSystemWatcher.Test
         }
 
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void FileSystemInitialStateEventsAreInvokedCorrectlyTest()
         {
             //Arrange
@@ -131,7 +131,7 @@ namespace Topshelf.FileSystemWatcher.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void NormaAndInitialFileSystemChangeEventsAreInvokedCorrectlyTest()
         {
             //Arrange
@@ -177,7 +177,7 @@ namespace Topshelf.FileSystemWatcher.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void NormalFileSystemChangeEventFilterTest()
         {
             //Arrange
@@ -212,7 +212,7 @@ namespace Topshelf.FileSystemWatcher.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void NormalAndInitialFileSystemChangeEventFilterTest()
         {
             //Arrange
@@ -258,7 +258,7 @@ namespace Topshelf.FileSystemWatcher.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void NormalAndInitialFileSystemChangeEventMultipleFiltersTest()
         {
             //Arrange
@@ -322,7 +322,7 @@ namespace Topshelf.FileSystemWatcher.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void NormalAndInitialFileSystemChangeEventMultipleConfiguratorsTest()
         {
             //Arrange

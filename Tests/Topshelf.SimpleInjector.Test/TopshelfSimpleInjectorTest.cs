@@ -8,7 +8,7 @@ namespace Topshelf.SimpleInjector.Test
     {
         private static Container _container;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void TestFixtureSetUp()
         {
             _container = new Container();
@@ -18,7 +18,7 @@ namespace Topshelf.SimpleInjector.Test
             _container.Register<ITestDependency, TestDependency>();
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void ExceptionIsThrownWhenUseSimpleInjectorMethodIsNotCalledTest()
         {
             var exception =
@@ -37,7 +37,7 @@ namespace Topshelf.SimpleInjector.Test
             Assert.IsTrue(exception.Message.Contains("An exception occurred creating the service: " + typeof(TestService).Name));
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void ExceptionIsThrownWhenConstructUsingSimpleInjectorMethodIsNotCalledTest()
         {
             var exception =
@@ -57,7 +57,7 @@ namespace Topshelf.SimpleInjector.Test
             Assert.IsTrue(exception.Message.Contains("Factory must not be null"));
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void TopShelfUsesSimpleInjectorToResolveDependenciesTest()
         {
             var exitCode =

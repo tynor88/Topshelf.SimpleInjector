@@ -18,7 +18,7 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             _container = new Container();
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void QuartzJobIsExecutedSuccessfullyTest()
         {
             //Arrange
@@ -51,7 +51,7 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.AtLeastOnce);
         }
 
-        [Test]
+        [Test, RunInApplicationDomain]
         public void JobFactoryIsCorrectlyUsedForIJobCreationTest()
         {
             //Arrange
@@ -114,6 +114,7 @@ namespace Topshelf.SimpleInjector.Quartz.Test
     {
     }
 
+    [Serializable]
     public class SampleDependency : ISampleDependency
     {
     }

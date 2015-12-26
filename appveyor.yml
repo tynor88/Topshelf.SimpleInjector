@@ -17,6 +17,7 @@ environment:
 before_build:
 - cmd: nuget restore
 build:
+  project: Topshelf.SimpleInjector.sln
   parallel: true
   verbosity: detailed
 test:

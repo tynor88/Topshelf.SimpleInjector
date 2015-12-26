@@ -40,7 +40,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz.Decorators.Sample", "Samples\Topshelf.SimpleInjector.Quartz.Decorators.Sample\Topshelf.SimpleInjector.Quartz.Decorators.Sample.csproj", "{2874600E-8FC7-4988-A792-D9010B575BA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.CI", "Topshelf.SimpleInjector.CI\Topshelf.SimpleInjector.CI.csproj", "{C496BFF2-294C-4253-89FD-BFC7D8A05201}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.CI", "Source\Topshelf.SimpleInjector.CI\Topshelf.SimpleInjector.CI.csproj", "{C496BFF2-294C-4253-89FD-BFC7D8A05201}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

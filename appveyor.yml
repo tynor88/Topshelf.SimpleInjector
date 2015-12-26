@@ -1,7 +1,10 @@
-version: 1.0.0.{build}
+version: 1.0.0-beta-{build}
+branches:
+  only:
+  - dev
 skip_tags: true
 os: Visual Studio 2015
-configuration: Debug
+configuration: Release
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'

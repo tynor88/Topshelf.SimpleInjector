@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Quartz;
@@ -27,22 +28,20 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             _container.Register<ISampleDependency, SampleDependency>();
 
             //Act
-            var host =
-                HostFactory.New(config =>
+            var host = HostFactory.New(config =>
+            {
+                config.UseTestHost();
+                config.UseQuartzSimpleInjector(_container);
+                _container.Verify();
+                config.Service<TestService>(s =>
                 {
-                    config.UseTestHost();
-                    config.UseQuartzSimpleInjector(_container);
-                    _container.Verify();
-                    config.Service<TestService>(s =>
-                    {
-                        s.ScheduleQuartzJob(
-                            configurator => configurator.WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
+                    s.ScheduleQuartzJob(configurator => configurator.WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
 
-                        s.ConstructUsingSimpleInjector();
-                        s.WhenStarted((service, control) => service.Start());
-                        s.WhenStopped((service, control) => service.Stop());
-                    });
+                    s.ConstructUsingSimpleInjector();
+                    s.WhenStarted((service, control) => service.Start());
+                    s.WhenStopped((service, control) => service.Stop());
                 });
+            });
 
             var exitCode = host.Run();
 
@@ -61,24 +60,21 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             Mock<IJobFactory> factoryMock = new Mock<IJobFactory>();
 
             //Act
-            var host =
-                HostFactory.New(config =>
+            var host = HostFactory.New(config =>
+            {
+                config.UsingQuartzJobFactory<IJobFactory>(() => factoryMock.Object);
+                config.UseTestHost();
+                config.UseQuartzSimpleInjector(_container);
+                _container.Verify();
+                config.Service<TestService>(s =>
                 {
-                    config.UsingQuartzJobFactory<IJobFactory>(() => factoryMock.Object);
-                    config.UseTestHost();
-                    config.UseQuartzSimpleInjector(_container);
-                    _container.Verify();
-                    config.Service<TestService>(s =>
-                    {
-                        s.ScheduleQuartzJob(
-                            configurator =>
-                                configurator.WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
+                    s.ScheduleQuartzJob(configurator => configurator.WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
 
-                        s.ConstructUsingSimpleInjector();
-                        s.WhenStarted((service, control) => service.Start());
-                        s.WhenStopped((service, control) => service.Stop());
-                    });
+                    s.ConstructUsingSimpleInjector();
+                    s.WhenStarted((service, control) => service.Start());
+                    s.WhenStopped((service, control) => service.Stop());
                 });
+            });
 
             var exitCode = host.Run();
 
@@ -103,6 +99,39 @@ namespace Topshelf.SimpleInjector.Quartz.Test
 
             //Assert
             Assert.AreEqual("Value cannot be null.\r\nParameter name: container", exception.Message);
+        }
+
+        [Test, RunInApplicationDomain]
+        public void DecoratedJobsAreCorrectlyExecutingTest()
+        {
+            //Arrange
+            Mock<IDecoratorDependency> decoratorDependencyMock = new Mock<IDecoratorDependency>();
+
+            _container.RegisterDecorator<IJob, TestJobDecorator>();
+            _container.Register<IDecoratorDependency>(() => decoratorDependencyMock.Object);
+            _container.Register<ISampleDependency, SampleDependency>();
+
+            //Act
+            var host = HostFactory.New(config =>
+            {
+                config.UseQuartzSimpleInjectorWithDecorators(_container, Assembly.GetExecutingAssembly());
+                config.UseTestHost();
+                _container.Verify();
+                config.Service<TestService>(s =>
+                {
+                    s.ScheduleQuartzJob(configurator => configurator.WithSimpleRepeatableSchedule<TestJob>(TimeSpan.FromMilliseconds(1), nameof(TestJob)));
+
+                    s.ConstructUsingSimpleInjector();
+                    s.WhenStarted((service, control) => service.Start());
+                    s.WhenStopped((service, control) => service.Stop());
+                });
+            });
+
+            var exitCode = host.Run();
+
+            //Assert
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
+            decoratorDependencyMock.Verify(dependency => dependency.DoSomething(), Times.AtLeastOnce);
         }
     }
 
@@ -142,6 +171,29 @@ namespace Topshelf.SimpleInjector.Quartz.Test
         public void Execute(IJobExecutionContext context)
         {
             Console.WriteLine("Executing...");
+        }
+    }
+
+    public interface IDecoratorDependency
+    {
+        void DoSomething();
+    }
+
+    public class TestJobDecorator : IJob
+    {
+        private readonly IJob _jobDecoratee;
+        private readonly IDecoratorDependency _decoratorDependency;
+
+        public TestJobDecorator(IJob jobDecoratee, IDecoratorDependency decoratorDependency)
+        {
+            _jobDecoratee = jobDecoratee;
+            _decoratorDependency = decoratorDependency;
+        }
+
+        public void Execute(IJobExecutionContext context)
+        {
+            _jobDecoratee.Execute(context);
+            _decoratorDependency.DoSomething();
         }
     }
 }

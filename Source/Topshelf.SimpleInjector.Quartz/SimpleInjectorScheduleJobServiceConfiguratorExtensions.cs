@@ -37,9 +37,6 @@ namespace Topshelf.SimpleInjector.Quartz
 
             Container container = SimpleInjectorHostBuilderConfigurator.Container;
 
-            if (container == null)
-                throw new Exception("You must call UseSimpleInjector() to use the Topshelf SimpleInjector Quartz integration.");
-
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory();
 
             if (jobAssemblies == null)

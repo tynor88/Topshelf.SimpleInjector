@@ -86,6 +86,24 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
             factoryMock.Verify(factory => factory.NewJob(It.IsAny<TriggerFiredBundle>(), It.IsAny<IScheduler>()), Times.AtLeastOnce);
         }
+
+        [Test, RunInApplicationDomain]
+        public void ExceptionIsThrownWhenTheContainerIsNullTest()
+        {
+            //Arrange
+            Container nullContainer = null;
+
+            //Act
+            var exception = Assert.Throws<ArgumentNullException>(() =>
+                HostFactory.New(config =>
+                {
+                    config.UseTestHost();
+                    config.UseQuartzSimpleInjector(nullContainer);
+                }));
+
+            //Assert
+            Assert.AreEqual("Value cannot be null.\r\nParameter name: container", exception.Message);
+        }
     }
 
     public class TestService

@@ -167,6 +167,8 @@ namespace Topshelf.FileSystemWatcher.Test
                             dir.Path = Directory.GetCurrentDirectory() + _testDir2;
                             dir.CreateDir = true;
                             dir.NotifyFilters = NotifyFilters.FileName;
+                            dir.IncludeSubDirectories = true;
+                            dir.InternalBufferSize = 8192;
                         });
                     }, onChanged.Object.FileSystemCreated);
                 });

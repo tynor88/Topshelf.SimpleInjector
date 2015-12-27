@@ -52,6 +52,41 @@ namespace Topshelf.SimpleInjector.Quartz.Test
         }
 
         [Test, RunInApplicationDomain]
+        public void QuartzJobWithCustomJobFactoryIsExecutedSuccessfullyTest()
+        {
+            //Arrange
+            Mock<IJob> testJobMock = new Mock<IJob>();
+            Mock<IJobFactory> factoryMock = new Mock<IJobFactory>();
+            factoryMock.Setup(factory => factory.NewJob(It.IsAny<TriggerFiredBundle>(), It.IsAny<IScheduler>())).Returns((IJob)testJobMock.Object);
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
+            _container.Register<ISampleDependency, SampleDependency>();
+
+            //Act
+            var host = HostFactory.New(config =>
+            {
+                config.UseTestHost();
+                config.UseQuartzSimpleInjector(_container);
+                _container.Verify();
+                config.Service<TestService>(s =>
+                {
+                    s.UsingQuartzJobFactory(() => (IJobFactory)factoryMock.Object);
+                    s.ScheduleQuartzJob(configurator => configurator.WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
+
+                    s.ConstructUsingSimpleInjector();
+                    s.WhenStarted((service, control) => service.Start());
+                    s.WhenStopped((service, control) => service.Stop());
+                });
+            });
+
+            var exitCode = host.Run();
+
+            //Assert
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
+            testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.AtLeastOnce);
+            factoryMock.Verify(factory => factory.NewJob(It.IsAny<TriggerFiredBundle>(), It.IsAny<IScheduler>()), Times.AtLeastOnce);
+        }
+
+        [Test, RunInApplicationDomain]
         public void QuartzJobListenerIsExecutedSuccessfullyTest()
         {
             //Arrange
@@ -98,7 +133,6 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             //Arrange
             Mock<IJob> testJobMock = new Mock<IJob>();
             _container.RegisterSingleton<IJob>(() => testJobMock.Object);
-            _container.Register<ISampleDependency, SampleDependency>();
 
             //Act
             var host = HostFactory.New(config =>
@@ -168,6 +202,34 @@ namespace Topshelf.SimpleInjector.Quartz.Test
 
             //Assert
             Assert.AreEqual("Value cannot be null.\r\nParameter name: container", exception.Message);
+        }
+
+        [Test, RunInApplicationDomain]
+        public void ExceptionIsThrownWhenMissingCallToHostConfiguratorUseQuartzSimpleInjectorTest()
+        {
+            //Arrange
+            Mock<IJob> testJobMock = new Mock<IJob>();
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
+
+            //Act
+            var exception = Assert.Throws<ServiceBuilderException>(() =>
+                HostFactory.New(config =>
+                {
+                    config.UseTestHost();
+                    //config.UseQuartzSimpleInjector(_container); Missing
+                    _container.Verify();
+                    config.Service<TestService>(s =>
+                    {
+                        s.ScheduleQuartzJob(configurator => configurator.WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
+
+                        s.ConstructUsingSimpleInjector();
+                        s.WhenStarted((service, control) => service.Start());
+                        s.WhenStopped((service, control) => service.Stop());
+                    });
+                }));
+
+            //Assert
+            Assert.AreEqual("An exception occurred creating the service: TestService", exception.Message);
         }
 
         [Test, RunInApplicationDomain]

@@ -6,21 +6,12 @@ using Quartz.Impl;
 using Quartz.Spi;
 using SimpleInjector;
 using Topshelf.Logging;
-using Topshelf.ServiceConfigurators;
 using Topshelf.SimpleInjector.Quartz.Factory;
 
 namespace Topshelf.SimpleInjector.Quartz
 {
-    public static class SimpleInjectorScheduleJobServiceConfiguratorExtensions
+    internal static class SimpleInjectorScheduleJobServiceConfiguratorExtensions
     {
-        public static ServiceConfigurator<T> UseQuartzSimpleInjector<T>(this ServiceConfigurator<T> configurator)
-            where T : class
-        {
-            SetupQuartzSimpleInjector();
-
-            return configurator;
-        }
-
         internal static void SetupQuartzSimpleInjector()
         {
             RegisterQuartzInSimpleInjector();

@@ -26,6 +26,6 @@ after_test:
 - cmd: >-
     mkdir reports
 
-    packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -mergeoutput -register:user -excludebyattribute:*.ExcludeFromCodeCoverage*^ -target:"packages\NUnit.Console.3.0.1\tools\nunit3-console.exe" "-targetargs:\"Tests\Topshelf.FileSystemWatcher.Test\bin\Release\Topshelf.FileSystemWatcher.Test.dll\" \"Tests\Topshelf.SimpleInjector.Quartz.Test\bin\Release\Topshelf.SimpleInjector.Quartz.Test.dll\" \"Tests\Topshelf.SimpleInjector.Test\bin\Release\Topshelf.SimpleInjector.Test.dll\"" -filter:"+[*]Topshelf.SimpleInjector.* +[*]Topshelf.FileSystemWatcher.* -[*.Test.*]*" -output:"reports\OpenCoverCoverage.xml"
+    packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -mergeoutput -register:user -excludebyattribute:*.ExcludeFromCodeCoverage*^ -target:"packages\NUnit.Console.3.0.1\tools\nunit3-console.exe" "-targetargs:\"Tests\Topshelf.FileSystemWatcher.Test\bin\Release\Topshelf.FileSystemWatcher.Test.dll\" \"Tests\Topshelf.SimpleInjector.Quartz.Test\bin\Release\Topshelf.SimpleInjector.Quartz.Test.dll\" \"Tests\Topshelf.SimpleInjector.Test\bin\Release\Topshelf.SimpleInjector.Test.dll\"" -filter:"+[*]Topshelf.SimpleInjector.* +[*]Topshelf.FileSystemWatcher.* -[*.Test]*" -output:"reports\OpenCoverCoverage.xml"
 
     packages\coveralls.net.0.6.0\tools\csmacnz.Coveralls.exe --opencover -i reports\OpenCoverCoverage.xml --repoToken %COVERALLS_REPO_TOKEN% --commitBranch %APPVEYOR_REPO_BRANCH%

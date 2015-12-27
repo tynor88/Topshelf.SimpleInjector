@@ -290,6 +290,67 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
             decoratorDependencyMock.Verify(dependency => dependency.DoSomething(), Times.AtLeastOnce);
         }
+
+        [Test, RunInApplicationDomain]
+        public void QuartzJobWithInvalidCronScheduleThrowsExceptionTest()
+        {
+            //Arrange
+            Mock<IJob> testJobMock = new Mock<IJob>();
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
+            _container.Register<ISampleDependency, SampleDependency>();
+
+            //Act
+            var exception = Assert.Throws<ArgumentException>(() =>
+                HostFactory.New(config =>
+                {
+                    config.UseTestHost();
+                    config.UseQuartzSimpleInjector(_container);
+                    _container.Verify();
+                    config.Service<TestService>(s =>
+                    {
+                        s.ScheduleQuartzJob(configurator => configurator.WithCronSchedule<IJob>("Invalid Cron Schedule"));
+
+                        s.ConstructUsingSimpleInjector();
+                        s.WhenStarted((service, control) => service.Start());
+                        s.WhenStopped((service, control) => service.Stop());
+                    });
+                }));
+
+            //Assert
+            Assert.AreEqual("must specify a valid cron expression\r\nParameter name: cronExpression", exception.Message);
+            testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.Never);
+        }
+
+        [Test, RunInApplicationDomain]
+        public void QuartzJobWithCronScheduleIsExecutedSuccessfullyTest()
+        {
+            //Arrange
+            Mock<IJob> testJobMock = new Mock<IJob>();
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
+            _container.Register<ISampleDependency, SampleDependency>();
+
+            //Act
+            var host = HostFactory.New(config =>
+            {
+                config.UseTestHost();
+                config.UseQuartzSimpleInjector(_container);
+                _container.Verify();
+                config.Service<TestService>(s =>
+                {
+                    s.ScheduleQuartzJob(configurator => configurator.WithCronSchedule<IJob>("0/1 * * * * ?"));
+
+                    s.ConstructUsingSimpleInjector();
+                    s.WhenStarted((service, control) => service.Start());
+                    s.WhenStopped((service, control) => service.Stop());
+                });
+            });
+
+            var exitCode = host.Run();
+
+            //Assert
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
+            testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.AtLeastOnce);
+        }
     }
 
     public class TestService

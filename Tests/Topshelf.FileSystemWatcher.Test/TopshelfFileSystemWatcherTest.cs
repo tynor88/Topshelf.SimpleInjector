@@ -393,6 +393,36 @@ namespace Topshelf.FileSystemWatcher.Test
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
+        [Test, RunInApplicationDomain]
+        public void ExceptionIsThrownWhenDirDoesNotExistTest()
+        {
+            //Arrange
+            Mock<IDelegateMock> onChanged = new Mock<IDelegateMock>();
+
+            //Act
+            var exitCode = HostFactory.Run(config =>
+            {
+                config.UseTestHost();
+
+                config.Service<TopshelfFileSystemWatcherTest>(s =>
+                {
+                    s.ConstructUsing(() => new TopshelfFileSystemWatcherTest());
+                    s.WhenStarted((service, host) => true);
+                    s.WhenStopped((service, host) => true);
+                    s.WhenFileSystemCreated(configurator => configurator.AddDirectory(dir =>
+                    {
+                        dir.Path = Directory.GetCurrentDirectory() + "TestDirWhichDoesNotExist";
+                        dir.CreateDir = false;
+                        dir.NotifyFilters = NotifyFilters.FileName;
+                    }), onChanged.Object.FileSystemCreated);
+                });
+            });
+
+            //Assert
+            onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            Assert.AreEqual(TopshelfExitCode.StartServiceFailed, exitCode);
+        }
+
         private static void CreateFile(string relativePath)
         {
             if (!Directory.Exists(Path.GetFullPath(Directory.GetCurrentDirectory() + relativePath)))

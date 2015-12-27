@@ -51,6 +51,33 @@ namespace Topshelf.SimpleInjector.Quartz.Test
         }
 
         [Test, RunInApplicationDomain]
+        public void QuartzJobAsAServiceIsExecutedSuccessfullyTest()
+        {
+            //Arrange
+            Mock<IJob> testJobMock = new Mock<IJob>();
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
+            _container.Register<ISampleDependency, SampleDependency>();
+
+            //Act
+            var host = HostFactory.New(config =>
+            {
+                config.UseTestHost();
+                config.UseQuartzSimpleInjector(_container);
+                _container.Verify();
+                config.ScheduleQuartzJobAsService(configurator =>
+                    configurator
+                    .WithJob(() => JobBuilder.Create<IJob>().Build())
+                    .WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
+            });
+
+            var exitCode = host.Run();
+
+            //Assert
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
+            testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.AtLeastOnce);
+        }
+
+        [Test, RunInApplicationDomain]
         public void JobFactoryIsCorrectlyUsedForIJobCreationTest()
         {
             //Arrange

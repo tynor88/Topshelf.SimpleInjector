@@ -3,6 +3,7 @@ using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using Quartz;
+using Quartz.Impl.Matchers;
 using Quartz.Spi;
 using SimpleInjector;
 
@@ -48,6 +49,47 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             //Assert
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
             testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.AtLeastOnce);
+        }
+
+        [Test, RunInApplicationDomain]
+        public void QuartzJobListenerIsExecutedSuccessfullyTest()
+        {
+            //Arrange
+            Mock<IJob> testJobMock = new Mock<IJob>();
+            Mock<IJobListener> jobListenerMock = new Mock<IJobListener>();
+            jobListenerMock.SetupGet(listener => listener.Name).Returns("jobWithListener");
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
+            _container.Register<ISampleDependency, SampleDependency>();
+
+            var jobWithListener = "jobWithListener";
+            var jobKey = new JobKey(jobWithListener);
+
+            //Act
+            var host = HostFactory.New(config =>
+            {
+                config.UseTestHost();
+                config.UseQuartzSimpleInjector(_container);
+                _container.Verify();
+                config.Service<TestService>(s =>
+                {
+                    s.ScheduleQuartzJob(configurator =>
+                        configurator
+                            .WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1), jobWithListener)
+                            .AddJobListener(() => (IJobListener)jobListenerMock.Object, KeyMatcher<JobKey>.KeyEquals(jobKey)));
+
+                    s.ConstructUsingSimpleInjector();
+                    s.WhenStarted((service, control) => service.Start());
+                    s.WhenStopped((service, control) => service.Stop());
+                });
+            });
+
+            var exitCode = host.Run();
+
+            //Assert
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
+            testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.AtLeastOnce);
+            jobListenerMock.Verify(listener => listener.JobToBeExecuted(It.IsAny<IJobExecutionContext>()), Times.AtLeastOnce);
+            jobListenerMock.Verify(listener => listener.JobWasExecuted(It.IsAny<IJobExecutionContext>(), It.IsAny<JobExecutionException>()), Times.AtLeastOnce);
         }
 
         [Test, RunInApplicationDomain]

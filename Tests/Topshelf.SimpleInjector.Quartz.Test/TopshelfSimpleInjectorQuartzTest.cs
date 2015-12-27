@@ -205,47 +205,31 @@ namespace Topshelf.SimpleInjector.Quartz.Test
         }
 
         [Test, RunInApplicationDomain]
-        public void ExceptionIsThrownWhenIJobInstanceCannotBeResolvedFromContainerTest()
-        {
-            //Arrange
-            Container nullContainer = null;
-
-            //Act
-            var exception = Assert.Throws<ArgumentNullException>(() =>
-                HostFactory.New(config =>
-                {
-                    config.UseTestHost();
-                    config.UseQuartzSimpleInjector(nullContainer);
-                }));
-
-            //Assert
-            Assert.AreEqual("Value cannot be null.\r\nParameter name: container", exception.Message);
-        }
-
-        [Test, RunInApplicationDomain]
         public void ExceptionIsThrownWhenMissingCallToHostConfiguratorUseQuartzSimpleInjectorTest()
         {
             //Arrange
             Mock<IJob> testJobMock = new Mock<IJob>();
-            _container.Register<ISampleDependency, SampleDependency>();
+            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
 
             //Act
-            var host = HostFactory.New(config =>
-            {
-                config.UseTestHost();
-                config.UseQuartzSimpleInjector(_container);
-                _container.Verify();
-                config.ScheduleQuartzJobAsService(configurator =>
-                    configurator
-                    .WithJob(() => JobBuilder.Create<IJob>().Build())
-                    .WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
-            });
+            var exception = Assert.Throws<ServiceBuilderException>(() =>
+                HostFactory.New(config =>
+                {
+                    config.UseTestHost();
+                    //config.UseQuartzSimpleInjector(_container); Missing
+                    _container.Verify();
+                    config.Service<TestService>(s =>
+                    {
+                        s.ScheduleQuartzJob(configurator => configurator.WithSimpleRepeatableSchedule<IJob>(TimeSpan.FromMilliseconds(1)));
 
-            var exitCode = host.Run();
+                        s.ConstructUsingSimpleInjector();
+                        s.WhenStarted((service, control) => service.Start());
+                        s.WhenStopped((service, control) => service.Stop());
+                    });
+                }));
 
             //Assert
-            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
-            testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.Never);
+            Assert.AreEqual("An exception occurred creating the service: TestService", exception.Message);
         }
 
         [Test, RunInApplicationDomain]

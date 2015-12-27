@@ -337,7 +337,9 @@ namespace Topshelf.SimpleInjector.Quartz.Test
                 _container.Verify();
                 config.Service<TestService>(s =>
                 {
-                    s.ScheduleQuartzJob(configurator => configurator.WithCronSchedule<IJob>("0/1 * * * * ?"));
+                    s.ScheduleQuartzJob(configurator => configurator
+                        .WithCronSchedule<IJob>("0/1 * * * * ?")
+                        .EnableJobWhen(() => true));
 
                     s.ConstructUsingSimpleInjector();
                     s.WhenStarted((service, control) => service.Start());

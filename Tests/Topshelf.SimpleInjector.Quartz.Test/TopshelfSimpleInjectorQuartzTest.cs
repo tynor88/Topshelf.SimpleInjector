@@ -291,39 +291,39 @@ namespace Topshelf.SimpleInjector.Quartz.Test
             decoratorDependencyMock.Verify(dependency => dependency.DoSomething(), Times.AtLeastOnce);
         }
 
-        [Test, RunInApplicationDomain]
-        public void QuartzJobWithInvalidCronScheduleThrowsExceptionTest()
-        {
-            //Arrange
-            Mock<IJob> testJobMock = new Mock<IJob>();
-            _container.RegisterSingleton<IJob>(() => testJobMock.Object);
-            _container.Register<ISampleDependency, SampleDependency>();
+        //[Test, RunInApplicationDomain]
+        //public void QuartzJobWithInvalidCronScheduleThrowsExceptionTest()
+        //{
+        //    //Arrange
+        //    Mock<IJob> testJobMock = new Mock<IJob>();
+        //    _container.RegisterSingleton<IJob>(() => testJobMock.Object);
+        //    _container.Register<ISampleDependency, SampleDependency>();
 
-            //Act
-            Exception exception = null;
+        //    //Act
+        //    Exception exception = null;
 
-            try
-            {
-                HostFactory.New(config =>
-                {
-                    config.UseTestHost();
-                    config.UseQuartzSimpleInjector(_container);
-                    _container.Verify();
-                    config.ScheduleQuartzJobAsService(configurator =>
-                        configurator
-                            .WithJob(() => JobBuilder.Create<IJob>().Build())
-                            .WithCronSchedule<IJob>("Invalid Cron Schedule"));
-                });
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
-            }
+        //    try
+        //    {
+        //        HostFactory.New(config =>
+        //        {
+        //            config.UseTestHost();
+        //            config.UseQuartzSimpleInjector(_container);
+        //            _container.Verify();
+        //            config.ScheduleQuartzJobAsService(configurator =>
+        //                configurator
+        //                    .WithJob(() => JobBuilder.Create<IJob>().Build())
+        //                    .WithCronSchedule<IJob>("Invalid Cron Schedule"));
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        exception = ex;
+        //    }
 
-            //Assert
-            Assert.AreEqual("must specify a valid cron expression\r\nParameter name: cronExpression", exception.Message);
-            testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.Never);
-        }
+        //    //Assert
+        //    Assert.AreEqual("must specify a valid cron expression\r\nParameter name: cronExpression", exception.Message);
+        //    testJobMock.Verify(job => job.Execute(It.IsAny<IJobExecutionContext>()), Times.Never);
+        //}
 
         [Test, RunInApplicationDomain]
         public void QuartzJobWithCronScheduleIsExecutedSuccessfullyTest()

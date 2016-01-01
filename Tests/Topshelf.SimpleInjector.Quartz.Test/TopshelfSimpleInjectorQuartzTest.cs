@@ -301,27 +301,29 @@ namespace Topshelf.SimpleInjector.Quartz.Test
 
             //Act
             Exception exception = null;
-            try
+
+            HostFactory.New(config =>
             {
-                HostFactory.New(config =>
+                config.UseTestHost();
+                config.UseQuartzSimpleInjector(_container);
+                _container.Verify();
+                config.Service<TestService>(s =>
                 {
-                    config.UseTestHost();
-                    config.UseQuartzSimpleInjector(_container);
-                    _container.Verify();
-                    config.Service<TestService>(s =>
+                    try
                     {
                         s.ScheduleQuartzJob(configurator => configurator.WithCronSchedule<IJob>("Invalid Cron Schedule"));
+                    }
+                    catch (Exception ex)
+                    {
+                        exception = ex;
+                    }
 
-                        s.ConstructUsingSimpleInjector();
-                        s.WhenStarted((service, control) => service.Start());
-                        s.WhenStopped((service, control) => service.Stop());
-                    });
+                    s.ConstructUsingSimpleInjector();
+                    s.WhenStarted((service, control) => service.Start());
+                    s.WhenStopped((service, control) => service.Stop());
                 });
-            }
-            catch (Exception ex)
-            {
-                exception = ex;
-            }
+            });
+
 
             //Assert
             Assert.AreEqual("must specify a valid cron expression\r\nParameter name: cronExpression", exception.Message);

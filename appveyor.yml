@@ -19,7 +19,7 @@ before_build:
 build:
   project: Topshelf.SimpleInjector.sln
   parallel: true
-  verbosity: detailed
+  verbosity: normal
 test:
   assemblies: '**\*.Test.dll'
 after_test:

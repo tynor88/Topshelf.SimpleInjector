@@ -1,4 +1,6 @@
 version: 1.0.0.{build}
+pull_requests:
+  do_not_increment_build_number: true
 branches:
   only:
   - master
@@ -24,6 +26,13 @@ build:
   verbosity: minimal
 test:
   assemblies: '**\*.Test.dll'
+after_test:
+- cmd: >-
+    mkdir reports
+
+    IF NOT DEFINED APPVEYOR_PULL_REQUEST_NUMBER packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -mergeoutput -register:user -excludebyattribute:*.ExcludeFromCodeCoverage*^ -target:"packages\NUnit.Console.3.0.1\tools\nunit3-console.exe" "-targetargs:\"Tests\Topshelf.FileSystemWatcher.Test\bin\Release\Topshelf.FileSystemWatcher.Test.dll\" \"Tests\Topshelf.SimpleInjector.Quartz.Test\bin\Release\Topshelf.SimpleInjector.Quartz.Test.dll\" \"Tests\Topshelf.SimpleInjector.Test\bin\Release\Topshelf.SimpleInjector.Test.dll\"" -filter:"+[*]Topshelf.SimpleInjector.* +[*]Topshelf.FileSystemWatcher.* -[*.Test]*" -output:"reports\OpenCoverCoverage.xml"
+
+    IF NOT DEFINED APPVEYOR_PULL_REQUEST_NUMBER packages\coveralls.net.0.6.0\tools\csmacnz.Coveralls.exe --opencover -i reports\OpenCoverCoverage.xml --repoToken %COVERALLS_REPO_TOKEN% --commitBranch %APPVEYOR_REPO_BRANCH%
 artifacts:
 - path: '*.nupkg'
 deploy:

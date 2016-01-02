@@ -71,9 +71,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyVersion.cs">
-      <Link>Properties\AssemblyVersion.cs</Link>
-    </Compile>
     <Compile Include="Factory\SimpleInjectorDecoratorJobFactory.cs" />
     <Compile Include="Factory\SimpleInjectorJobFactory.cs" />
     <Compile Include="NullService.cs" />

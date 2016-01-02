@@ -55,9 +55,7 @@ namespace Topshelf.SimpleInjector.Quartz.Factory
             }
             catch (Exception ex)
             {
-                throw new SchedulerConfigException(string.Format(CultureInfo.InvariantCulture,
-                    "Failed to instantiate Job '{0}' of type '{1}'",
-                    bundle.JobDetail.Key, bundle.JobDetail.JobType), ex);
+                throw new SchedulerConfigException(string.Format(CultureInfo.InvariantCulture, $"Failed to instantiate Job '{bundle.JobDetail.Key}' of type '{bundle.JobDetail.JobType}'"), ex);
             }
         }
 

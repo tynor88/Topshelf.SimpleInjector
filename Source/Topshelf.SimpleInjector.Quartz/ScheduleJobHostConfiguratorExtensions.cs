@@ -21,18 +21,6 @@ namespace Topshelf.SimpleInjector.Quartz
         }
 
         /// <summary>
-        /// Provide your own IJobFactory implementation for SimpleInjector to resolve IJob instances
-        /// </summary>
-        /// <typeparam name="TJobFactory"></typeparam>
-        /// <param name="configurator"></param>
-        /// <returns></returns>
-        public static HostConfigurator UsingQuartzJobFactory<TJobFactory>(this HostConfigurator configurator)
-            where TJobFactory : IJobFactory, new()
-        {
-            return UsingQuartzJobFactory(configurator, () => new TJobFactory());
-        }
-
-        /// <summary>
         /// Schedule a Quartz Job as a Service
         /// </summary>
         /// <param name="configurator">The HostConfigurator</param>

@@ -33,16 +33,9 @@ namespace Topshelf.SimpleInjector.Quartz
             return configurator;
         }
 
-        public static ServiceConfigurator<T> UsingQuartzJobFactory<T, TJobFactory>(this ServiceConfigurator<T> configurator)
-            where T : class
-            where TJobFactory : IJobFactory, new()
-        {
-            return UsingQuartzJobFactory(configurator, () => new TJobFactory());
-        }
-
         public static ServiceConfigurator<T> ScheduleQuartzJob<T>(this ServiceConfigurator<T> configurator, Action<QuartzConfigurator> jobConfigurator) where T : class
         {
-            ConfigureJob<T>(configurator, jobConfigurator);
+            ConfigureJob(configurator, jobConfigurator);
             return configurator;
         }
 

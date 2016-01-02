@@ -18,17 +18,9 @@ namespace Topshelf.SimpleInjector.Quartz
 
         public Func<IJobDetail> Job { get; private set; }
 
-        public ICollection<Func<ITrigger>> Triggers
-        {
-            get { return _triggers ?? (_triggers = new Collection<Func<ITrigger>>()); }
-            set { _triggers = value; }
-        }
+        public ICollection<Func<ITrigger>> Triggers => _triggers ?? (_triggers = new Collection<Func<ITrigger>>());
 
-        public ICollection<Tuple<Func<IJobListener>, IMatcher<JobKey>[]>> JobListeners
-        {
-            get { return _jobListeners ?? (_jobListeners = new Collection<Tuple<Func<IJobListener>, IMatcher<JobKey>[]>>()); }
-            set { _jobListeners = value; }
-        }
+        public ICollection<Tuple<Func<IJobListener>, IMatcher<JobKey>[]>> JobListeners => _jobListeners ?? (_jobListeners = new Collection<Tuple<Func<IJobListener>, IMatcher<JobKey>[]>>());
 
         public Func<bool> JobEnabled { get; private set; }
 

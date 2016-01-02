@@ -20,8 +20,7 @@ namespace Topshelf.FileSystemWatcher
             Action<TopshelfFileSystemEventArgs> fileSystemChanged)
             where T : class
         {
-            return WhenFileSystemChanged(configurator, fileSystemWatcherConfigurator, fileSystemChanged,
-                null, null, fileSystemChanged);
+            return WhenFileSystemChanged(configurator, fileSystemWatcherConfigurator, fileSystemChanged, null, null, fileSystemChanged);
         }
 
         public static ServiceConfigurator<T> WhenFileSystemCreated<T>(this ServiceConfigurator<T> configurator,
@@ -29,8 +28,7 @@ namespace Topshelf.FileSystemWatcher
             Action<TopshelfFileSystemEventArgs> fileSystemCreated)
             where T : class
         {
-            return WhenFileSystemChanged(configurator, fileSystemWatcherConfigurator, null,
-                fileSystemCreated, null, fileSystemCreated);
+            return WhenFileSystemChanged(configurator, fileSystemWatcherConfigurator, null, fileSystemCreated, null, fileSystemCreated);
         }
 
         public static ServiceConfigurator<T> WhenFileSystemDeleted<T>(this ServiceConfigurator<T> configurator,
@@ -38,8 +36,7 @@ namespace Topshelf.FileSystemWatcher
             Action<TopshelfFileSystemEventArgs> fileSystemDeleted)
             where T : class
         {
-            return WhenFileSystemChanged(configurator, fileSystemWatcherConfigurator, null,
-                null, fileSystemDeleted, fileSystemDeleted);
+            return WhenFileSystemChanged(configurator, fileSystemWatcherConfigurator, null, null, fileSystemDeleted, fileSystemDeleted);
         }
 
         public static ServiceConfigurator<T> WhenFileSystemChanged<T>(this ServiceConfigurator<T> configurator,
@@ -114,8 +111,7 @@ namespace Topshelf.FileSystemWatcher
                         }
                     }
 
-                    var fileSystemWatcher = CreateFileSystemWatcher(config.Path, config.NotifyFilters,
-                        config.FileFilter, config.IncludeSubDirectories, config.InternalBufferSize);
+                    var fileSystemWatcher = CreateFileSystemWatcher(config.Path, config.NotifyFilters, config.FileFilter, config.IncludeSubDirectories, config.InternalBufferSize);
 
                     if (watcherOnChanged != null)
                         fileSystemWatcher.Changed += watcherOnChanged;
@@ -172,8 +168,7 @@ namespace Topshelf.FileSystemWatcher
             });
         }
 
-        private static void BeforeStoppingService<T>(ServiceConfigurator<T> configurator, LogWriter log,
-            FileSystemEventHandler watcherOnChanged) where T : class
+        private static void BeforeStoppingService<T>(ServiceConfigurator<T> configurator, LogWriter log, FileSystemEventHandler watcherOnChanged) where T : class
         {
             configurator.BeforeStoppingService(() =>
             {
@@ -192,8 +187,7 @@ namespace Topshelf.FileSystemWatcher
             });
         }
 
-        private static System.IO.FileSystemWatcher CreateFileSystemWatcher(string path,
-            NotifyFilters notifyFilters, string fileFilter, bool includeSubDirectories, int internalBufferSize)
+        private static System.IO.FileSystemWatcher CreateFileSystemWatcher(string path, NotifyFilters notifyFilters, string fileFilter, bool includeSubDirectories, int internalBufferSize)
         {
             System.IO.FileSystemWatcher watcher = new System.IO.FileSystemWatcher
             {

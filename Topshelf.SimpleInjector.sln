@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2014
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3A2AB2C4-C72A-4A6E-87EE-A409E3E80239}"
 	ProjectSection(SolutionItems) = preProject
@@ -39,6 +39,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.FileSystemWatcher.Test", "Tests\Topshelf.FileSystemWatcher.Test\Topshelf.FileSystemWatcher.Test.csproj", "{57A54600-5F61-4C3F-BAEC-FAF08F704163}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.Quartz.Decorators.Sample", "Samples\Topshelf.SimpleInjector.Quartz.Decorators.Sample\Topshelf.SimpleInjector.Quartz.Decorators.Sample.csproj", "{2874600E-8FC7-4988-A792-D9010B575BA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Topshelf.SimpleInjector.CI", "Source\Topshelf.SimpleInjector.CI\Topshelf.SimpleInjector.CI.csproj", "{C496BFF2-294C-4253-89FD-BFC7D8A05201}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +96,10 @@ Global
 		{2874600E-8FC7-4988-A792-D9010B575BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2874600E-8FC7-4988-A792-D9010B575BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2874600E-8FC7-4988-A792-D9010B575BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C496BFF2-294C-4253-89FD-BFC7D8A05201}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C496BFF2-294C-4253-89FD-BFC7D8A05201}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C496BFF2-294C-4253-89FD-BFC7D8A05201}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C496BFF2-294C-4253-89FD-BFC7D8A05201}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +117,6 @@ Global
 		{84A32194-2A00-4BE2-8970-9461371C6E79} = {20BC121B-A376-4B49-9574-5E4FFDED3536}
 		{57A54600-5F61-4C3F-BAEC-FAF08F704163} = {2FFCA6A2-8F71-42A1-9EDC-4DA63A6B459E}
 		{2874600E-8FC7-4988-A792-D9010B575BA4} = {20BC121B-A376-4B49-9574-5E4FFDED3536}
+		{C496BFF2-294C-4253-89FD-BFC7D8A05201} = {2E95EF45-683A-4799-955E-58ACA3D04DFD}
 	EndGlobalSection
 EndGlobal

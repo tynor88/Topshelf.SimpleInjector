@@ -18,6 +18,8 @@ before_build:
 - cmd: nuget restore
 build:
   project: Topshelf.SimpleInjector.sln
+  publish_nuget: true
+  include_nuget_references: true
   parallel: true
   verbosity: minimal
 test:
@@ -29,6 +31,14 @@ after_test:
     packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -mergeoutput -register:user -excludebyattribute:*.ExcludeFromCodeCoverage*^ -target:"packages\NUnit.Console.3.0.1\tools\nunit3-console.exe" "-targetargs:\"Tests\Topshelf.FileSystemWatcher.Test\bin\Release\Topshelf.FileSystemWatcher.Test.dll\" \"Tests\Topshelf.SimpleInjector.Quartz.Test\bin\Release\Topshelf.SimpleInjector.Quartz.Test.dll\" \"Tests\Topshelf.SimpleInjector.Test\bin\Release\Topshelf.SimpleInjector.Test.dll\"" -filter:"+[*]Topshelf.SimpleInjector.* +[*]Topshelf.FileSystemWatcher.* -[*.Test]*" -output:"reports\OpenCoverCoverage.xml"
 
     packages\coveralls.net.0.6.0\tools\csmacnz.Coveralls.exe --opencover -i reports\OpenCoverCoverage.xml --repoToken %COVERALLS_REPO_TOKEN% --commitBranch %APPVEYOR_REPO_BRANCH%
+artifacts:
+- path: '**\*.nupkg'
+deploy:
+- provider: NuGet
+  api_key:
+    secure: +ug6kwo6xvx5Cve5Z6UGxc8E/MdJ9JliiCx+78gIuhvh1ot22VETceLEd8YXKYqg
+  skip_symbols: true
+  artifact: 
 notifications:
 - provider: Email
   to:

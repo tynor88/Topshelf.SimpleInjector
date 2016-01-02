@@ -1,1 +1,1 @@
-NuGet Pack ..\Source\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj -OutputDirectory ..\PublishedNugetPackages\
+NuGet Pack ..\Source\Topshelf.SimpleInjector\Topshelf.SimpleInjector.csproj -OutputDirectory ..\ReadyForRelease\

@@ -11,6 +11,11 @@
         Normal,
 
         /// <summary>
+        /// A renamed FileSystemChange event
+        /// </summary>
+        Renamed,
+
+        /// <summary>
         /// A CurrentState event (e.g. if service was restarted)
         /// </summary>
         CurrentState,

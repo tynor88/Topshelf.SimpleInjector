@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Text;
 using Moq;
 using NUnit.Framework;
@@ -14,14 +14,14 @@ namespace Topshelf.FileSystemWatcher.Test
         [TearDown]
         public void TearDown()
         {
-            if (Directory.Exists(Directory.GetCurrentDirectory() + _testDir))
-                Directory.Delete(Directory.GetCurrentDirectory() + _testDir, true);
-            if (Directory.Exists(Directory.GetCurrentDirectory() + _testDir2))
-                Directory.Delete(Directory.GetCurrentDirectory() + _testDir2, true);
+            if (Directory.Exists(TestContext.CurrentContext.WorkDirectory + _testDir))
+                Directory.Delete(TestContext.CurrentContext.WorkDirectory + _testDir, true);
+            if (Directory.Exists(TestContext.CurrentContext.WorkDirectory + _testDir2))
+                Directory.Delete(TestContext.CurrentContext.WorkDirectory + _testDir2, true);
         }
 
         [Test, RunInApplicationDomain]
-        public void FileSystemChangeEventIsInvokedWithOneDirectoryTest()
+        public void FileSystemCreateEventIsInvokedWithOneDirectoryTest()
         {
             //Arrange
             Mock<IDelegateMock> onChanged = new Mock<IDelegateMock>();
@@ -42,7 +42,7 @@ namespace Topshelf.FileSystemWatcher.Test
                     s.WhenStopped((service, host) => true);
                     s.WhenFileSystemCreated(configurator => configurator.AddDirectory(dir =>
                     {
-                        dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                         dir.CreateDir = true;
                         dir.NotifyFilters = NotifyFilters.FileName;
                     }), onChanged.Object.FileSystemCreated);
@@ -51,6 +51,10 @@ namespace Topshelf.FileSystemWatcher.Test
 
             //Assert
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Once);
+            onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
@@ -72,13 +76,13 @@ namespace Topshelf.FileSystemWatcher.Test
                     s.WhenStarted((service, host) =>
                     {
                         CreateFile(_testDir + testDeleteFile);
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + testDeleteFile);
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + testDeleteFile);
                         return true;
                     });
                     s.WhenStopped((service, host) => true);
                     s.WhenFileSystemDeleted(configurator => configurator.AddDirectory(dir =>
                     {
-                        dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                         dir.CreateDir = true;
                         dir.NotifyFilters = NotifyFilters.FileName;
                     }), onChanged.Object.FileSystemDeleted);
@@ -89,12 +93,13 @@ namespace Topshelf.FileSystemWatcher.Test
             onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Once);
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
         [Test, RunInApplicationDomain]
-        public void FileSystemChangeEventIsInvokedWithOneDirectoryTest2()
+        public void FileSystemChangeEventIsInvokedWithOneDirectoryTest()
         {
             //Arrange
             Mock<IDelegateMock> onChanged = new Mock<IDelegateMock>();
@@ -112,14 +117,14 @@ namespace Topshelf.FileSystemWatcher.Test
                     s.WhenStarted((service, host) =>
                     {
                         CreateFile(_testDir + "testFile.Test");
-                        WriteToFile(Directory.GetCurrentDirectory() + _testDir + "testFile.Test", "123");
-                        WriteToFile(Directory.GetCurrentDirectory() + _testDir + "testFile.Test", "321");
+                        WriteToFile(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test", "123");
+                        WriteToFile(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test", "321");
                         return true;
                     });
                     s.WhenStopped((service, host) => true);
                     s.WhenFileSystemChanged(configurator => configurator.AddDirectory(dir =>
                     {
-                        dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                         dir.CreateDir = true;
                         dir.IncludeSubDirectories = true;
                         dir.NotifyFilters = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.CreationTime;
@@ -131,6 +136,50 @@ namespace Topshelf.FileSystemWatcher.Test
             onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(2));
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
+        }
+
+        [Test, RunInApplicationDomain]
+        public void FileSystemRenameEventIsInvokedWithOneDirectoryTest()
+        {
+            //Arrange
+            Mock<IDelegateMock> onChanged = new Mock<IDelegateMock>();
+            TopshelfFileSystemEventArgs argsCalled = null;
+            onChanged.Setup(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>())).Callback<TopshelfFileSystemEventArgs>(args => argsCalled = args);
+
+            CreateFile(_testDir + "testFile.Test");
+
+            //Act
+            var exitCode = HostFactory.Run(config =>
+            {
+                config.UseTestHost();
+
+                config.Service<TopshelfFileSystemWatcherTest>(s =>
+                {
+                    s.ConstructUsing(() => new TopshelfFileSystemWatcherTest());
+                    s.WhenStarted((service, host) =>
+                    {
+                        RenameFile(_testDir + "testFile.Test", _testDir + "testFile2.Test");
+                        return true;
+                    });
+                    s.WhenStopped((service, host) => true);
+                    s.WhenFileSystemRenamed(configurator => configurator.AddDirectory(dir =>
+                    {
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
+                        dir.CreateDir = true;
+                        dir.IncludeSubDirectories = true;
+                        dir.NotifyFilters = NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName | NotifyFilters.CreationTime;
+                    }), onChanged.Object.FileSystemRenamed);
+                });
+            });
+
+            //Assert
+            onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(1));
             onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
@@ -160,13 +209,13 @@ namespace Topshelf.FileSystemWatcher.Test
                     {
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                             dir.CreateDir = true;
                             dir.NotifyFilters = NotifyFilters.FileName;
                         });
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir2;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir2;
                             dir.CreateDir = true;
                             dir.NotifyFilters = NotifyFilters.FileName;
                         });
@@ -176,9 +225,12 @@ namespace Topshelf.FileSystemWatcher.Test
 
             //Assert
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(2));
+            onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
-
 
         [Test, RunInApplicationDomain]
         public void FileSystemInitialStateEventsAreInvokedCorrectlyTest()
@@ -201,7 +253,7 @@ namespace Topshelf.FileSystemWatcher.Test
                     s.WhenStopped((service, host) => true);
                     s.WhenFileSystemCreated(configurator => configurator.AddDirectory(dir =>
                     {
-                        dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                         dir.CreateDir = true;
                         dir.GetInitialStateEvent = true;
                     }), onChanged.Object.FileSystemCreated);
@@ -210,6 +262,10 @@ namespace Topshelf.FileSystemWatcher.Test
 
             //Assert
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(3));
+            onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
@@ -240,13 +296,13 @@ namespace Topshelf.FileSystemWatcher.Test
                     {
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                             dir.CreateDir = true;
                             dir.GetInitialStateEvent = true;
                         });
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir2;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir2;
                             dir.CreateDir = true;
                             dir.NotifyFilters = NotifyFilters.FileName;
                             dir.IncludeSubDirectories = true;
@@ -258,6 +314,10 @@ namespace Topshelf.FileSystemWatcher.Test
 
             //Assert
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(4));
+            onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
@@ -283,7 +343,7 @@ namespace Topshelf.FileSystemWatcher.Test
                     s.WhenStopped((service, host) => true);
                     s.WhenFileSystemCreated(configurator => configurator.AddDirectory(dir =>
                     {
-                        dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                         dir.CreateDir = true;
                         dir.FileFilter = "*.Test2";
                         dir.NotifyFilters = NotifyFilters.FileName;
@@ -293,6 +353,10 @@ namespace Topshelf.FileSystemWatcher.Test
 
             //Assert
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
@@ -317,20 +381,22 @@ namespace Topshelf.FileSystemWatcher.Test
                         CreateFile(_testDir + "testFile.Test2");
                         CreateFile(_testDir + "testFile.Test");
 
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test");
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test2");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test2");
 
                         return true;
                     });
                     s.WhenStopped((service, host) => true);
                     s.WhenFileSystemChanged(configurator => configurator.AddDirectory(dir =>
                     {
-                        dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                         dir.CreateDir = true;
                         dir.FileFilter = "*.Test2";
                         dir.NotifyFilters = NotifyFilters.FileName;
                         dir.GetInitialStateEvent = true;
-                    }), onChanged.Object.FileSystemChanged, onChanged.Object.FileSystemCreated, onChanged.Object.FileSystemDeleted, onChanged.Object.FileSystemInitial);
+                    }), onChanged.Object.FileSystemChanged, onChanged.Object.FileSystemCreated,
+                        onChanged.Object.FileSystemRenamed,
+                        onChanged.Object.FileSystemDeleted, onChanged.Object.FileSystemInitial);
                 });
             });
 
@@ -339,6 +405,7 @@ namespace Topshelf.FileSystemWatcher.Test
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(1));
             onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(1));
             onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(1));
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
@@ -367,10 +434,10 @@ namespace Topshelf.FileSystemWatcher.Test
                         CreateFile(_testDir + "testFile1.Test2");
                         CreateFile(_testDir + "testFile.Test");
 
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test");
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test2");
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile1.Test2");
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test3");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test2");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile1.Test2");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test3");
 
                         return true;
                     });
@@ -379,7 +446,7 @@ namespace Topshelf.FileSystemWatcher.Test
                     {
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                             dir.CreateDir = true;
                             dir.FileFilter = "*.Test2";
                             dir.NotifyFilters = NotifyFilters.FileName;
@@ -387,13 +454,14 @@ namespace Topshelf.FileSystemWatcher.Test
                         });
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                             dir.CreateDir = true;
                             dir.FileFilter = "*.Test3";
                             dir.NotifyFilters = NotifyFilters.FileName;
                             dir.GetInitialStateEvent = true;
                         });
                     }, onChanged.Object.FileSystemChanged, onChanged.Object.FileSystemCreated,
+                        onChanged.Object.FileSystemRenamed,
                         onChanged.Object.FileSystemDeleted, onChanged.Object.FileSystemInitial);
                 });
             });
@@ -403,6 +471,7 @@ namespace Topshelf.FileSystemWatcher.Test
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(3));
             onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(3));
             onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(3));
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
@@ -429,9 +498,9 @@ namespace Topshelf.FileSystemWatcher.Test
                         CreateFile(_testDir + "testFile.Test2");
                         CreateFile(_testDir + "testFile.Test");
 
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test");
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test2");
-                        File.Delete(Directory.GetCurrentDirectory() + _testDir + "testFile.Test3");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test2");
+                        File.Delete(TestContext.CurrentContext.WorkDirectory + _testDir + "testFile.Test3");
 
                         return true;
                     });
@@ -440,7 +509,7 @@ namespace Topshelf.FileSystemWatcher.Test
                     {
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                             dir.CreateDir = true;
                             dir.FileFilter = "*.Test2";
                             dir.NotifyFilters = NotifyFilters.FileName;
@@ -448,7 +517,7 @@ namespace Topshelf.FileSystemWatcher.Test
                         });
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                             dir.CreateDir = true;
                             dir.FileFilter = "*.Test3";
                             dir.NotifyFilters = NotifyFilters.FileName;
@@ -456,13 +525,14 @@ namespace Topshelf.FileSystemWatcher.Test
                         });
                         configurator.AddDirectory(dir =>
                         {
-                            dir.Path = Directory.GetCurrentDirectory() + _testDir;
+                            dir.Path = TestContext.CurrentContext.WorkDirectory + _testDir;
                             dir.CreateDir = true;
                             dir.FileFilter = "*.Test";
                             dir.NotifyFilters = NotifyFilters.FileName;
                             dir.GetInitialStateEvent = false;
                         });
-                    }, onChanged.Object.FileSystemChanged, onChanged.Object.FileSystemCreated,
+                    }, onChanged.Object.FileSystemChanged, onChanged.Object.FileSystemCreated, 
+                        onChanged.Object.FileSystemRenamed,
                         onChanged.Object.FileSystemDeleted, onChanged.Object.FileSystemInitial);
                 });
             });
@@ -472,6 +542,7 @@ namespace Topshelf.FileSystemWatcher.Test
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(3));
             onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(3));
             onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Exactly(2));
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.Ok, exitCode);
         }
 
@@ -493,7 +564,7 @@ namespace Topshelf.FileSystemWatcher.Test
                     s.WhenStopped((service, host) => true);
                     s.WhenFileSystemCreated(configurator => configurator.AddDirectory(dir =>
                     {
-                        dir.Path = Directory.GetCurrentDirectory() + "TestDirWhichDoesNotExist";
+                        dir.Path = TestContext.CurrentContext.WorkDirectory + "TestDirWhichDoesNotExist";
                         dir.CreateDir = false;
                         dir.NotifyFilters = NotifyFilters.FileName;
                     }), onChanged.Object.FileSystemCreated);
@@ -502,16 +573,25 @@ namespace Topshelf.FileSystemWatcher.Test
 
             //Assert
             onChanged.Verify(mock => mock.FileSystemCreated(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemChanged(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemDeleted(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemInitial(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
+            onChanged.Verify(mock => mock.FileSystemRenamed(It.IsAny<TopshelfFileSystemEventArgs>()), Times.Never);
             Assert.AreEqual(TopshelfExitCode.StartServiceFailed, exitCode);
         }
 
         private static void CreateFile(string relativePath)
         {
-            if (!Directory.Exists(Path.GetFullPath(Directory.GetCurrentDirectory() + relativePath)))
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + Path.GetDirectoryName(relativePath));
-            using (FileStream fs = File.Create(Directory.GetCurrentDirectory() + relativePath))
+            if (!Directory.Exists(Path.GetFullPath(TestContext.CurrentContext.WorkDirectory + Path.GetDirectoryName(relativePath))))
+                Directory.CreateDirectory(TestContext.CurrentContext.WorkDirectory + Path.GetDirectoryName(relativePath));
+            using (FileStream fs = File.Create(TestContext.CurrentContext.WorkDirectory + relativePath))
             {
             }
+        }
+
+        private static void RenameFile(string relativePath, string newRelativePath)
+        {
+            File.Move(TestContext.CurrentContext.WorkDirectory + relativePath, TestContext.CurrentContext.WorkDirectory + newRelativePath);
         }
 
         private void WriteToFile(string pathOfFileToWriteTo, string dataToWrite)
@@ -524,21 +604,9 @@ namespace Topshelf.FileSystemWatcher.Test
         }
     }
 
-    internal class MyService : ServiceControl
-    {
-        public bool Start(HostControl hostControl)
-        {
-            return true;
-        }
-
-        public bool Stop(HostControl hostControl)
-        {
-            return true;
-        }
-    }
-
     public interface IDelegateMock
     {
+        void FileSystemRenamed(TopshelfFileSystemEventArgs args);
         void FileSystemChanged(TopshelfFileSystemEventArgs args);
         void FileSystemCreated(TopshelfFileSystemEventArgs args);
         void FileSystemDeleted(TopshelfFileSystemEventArgs args);

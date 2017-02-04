@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using Topshelf.Logging;
 using Topshelf.ServiceConfigurators;
 
@@ -10,8 +11,6 @@ namespace Topshelf.FileSystemWatcher
 {
     public static class ServiceConfiguratorExtensions
     {
-        private const string _defaultFileFilter = "*.*";
-
         private static readonly ICollection<System.IO.FileSystemWatcher> _watchers =
             new Collection<System.IO.FileSystemWatcher>();
 
@@ -137,25 +136,62 @@ namespace Topshelf.FileSystemWatcher
 
                     var fileSystemWatcher = CreateFileSystemWatcher(config.Path, config.NotifyFilters, config.FileFilter, config.IncludeSubDirectories, config.InternalBufferSize);
 
-                    if (watcherOnChanged != null)
-                        fileSystemWatcher.Changed += watcherOnChanged;
-                    if (watcherOnCreated != null)
-                        fileSystemWatcher.Created += watcherOnCreated;
-                    if (watcherOnRenamed != null)
-                        fileSystemWatcher.Renamed += watcherOnRenamed;
-                    if (watcherOnDeleted != null)
-                        fileSystemWatcher.Deleted += watcherOnDeleted;
+                    if (config.ExcludeDuplicateEvents)
+                    {
+                        if (watcherOnChanged != null)
+                            Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
+                                h => fileSystemWatcher.Changed += h,
+                                h => fileSystemWatcher.Changed -= h).
+                                Window(config.ExcludeDuplicateEventsWindowTime).
+                                SelectMany(x => x.Distinct(z => z.EventArgs.FullPath)).
+                                Subscribe(pattern => { lock (_watchers) { watcherOnChanged(pattern.Sender, pattern.EventArgs); } });
+
+                        if (watcherOnCreated != null)
+                            Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
+                                h => { fileSystemWatcher.Created += h; fileSystemWatcher.Changed += h; },
+                                h => { fileSystemWatcher.Created -= h; fileSystemWatcher.Changed += h; }).
+                                Window(config.ExcludeDuplicateEventsWindowTime).
+                                SelectMany(x => x.Distinct(z => z.EventArgs.FullPath)).
+                                Subscribe(pattern => { lock (_watchers) { watcherOnCreated(pattern.Sender, pattern.EventArgs); } });
+
+                        if (watcherOnRenamed != null)
+                            Observable.FromEventPattern<RenamedEventHandler, RenamedEventArgs>(
+                                h => fileSystemWatcher.Renamed += h,
+                                h => fileSystemWatcher.Renamed -= h).
+                                Window(config.ExcludeDuplicateEventsWindowTime).
+                                SelectMany(x => x.Distinct(z => z.EventArgs.FullPath)).
+                                Subscribe(pattern => { lock (_watchers) { watcherOnRenamed(pattern.Sender, pattern.EventArgs); } });
+
+                        if (watcherOnDeleted != null)
+                            Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
+                                h => fileSystemWatcher.Deleted += h,
+                                h => fileSystemWatcher.Deleted -= h).
+                                Window(config.ExcludeDuplicateEventsWindowTime).
+                                SelectMany(x => x.Distinct(z => z.EventArgs.FullPath)).
+                                Subscribe(pattern => { lock (_watchers) { watcherOnDeleted(pattern.Sender, pattern.EventArgs); } });
+                    }
+                    else
+                    {
+                        if (watcherOnChanged != null)
+                            fileSystemWatcher.Changed += watcherOnChanged;
+                        if (watcherOnCreated != null)
+                            fileSystemWatcher.Created += watcherOnCreated;
+                        if (watcherOnRenamed != null)
+                            fileSystemWatcher.Renamed += watcherOnRenamed;
+                        if (watcherOnDeleted != null)
+                            fileSystemWatcher.Deleted += watcherOnDeleted;
+                    }
 
                     _watchers.Add(fileSystemWatcher);
 
                     log.Info($"[Topshelf.FileSystemWatcher] configured to listen for events in {config.Path}");
 
-                    foreach (System.IO.FileSystemWatcher watcher in _watchers)
-                    {
-                        watcher.EnableRaisingEvents = true;
-                    }
+                    //foreach (System.IO.FileSystemWatcher watcher in _watchers)
+                    //{
+                    //    watcher.EnableRaisingEvents = true;
+                    //}
 
-                    log.Info("[Topshelf.FileSystemWatcher] listening for events");
+                    //log.Info("[Topshelf.FileSystemWatcher] listening for events");
                 }
             });
         }
@@ -221,16 +257,9 @@ namespace Topshelf.FileSystemWatcher
                 EnableRaisingEvents = true,
                 IncludeSubdirectories = includeSubDirectories,
                 NotifyFilter = notifyFilters,
+                Filter = fileFilter,
             };
 
-            if (!string.IsNullOrWhiteSpace(fileFilter))
-            {
-                watcher.Filter = fileFilter;
-            }
-            else
-            {
-                watcher.Filter = _defaultFileFilter;
-            }
             if (internalBufferSize > 0)
             {
                 watcher.InternalBufferSize = internalBufferSize;

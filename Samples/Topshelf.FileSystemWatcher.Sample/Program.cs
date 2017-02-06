@@ -6,40 +6,114 @@ namespace Topshelf.FileSystemWatcher.Sample
     internal class Program
     {
         private static readonly string _testDir = Directory.GetCurrentDirectory() + @"\test\";
+        private static readonly bool _includeSubDirectories = true;
+        private static readonly bool _excludeDuplicateEvents = true;
 
         private static void Main(string[] args)
         {
             HostFactory.Run(config =>
             {
-                config.UseTestHost();
-
                 config.Service<Program>(s =>
                 {
                     s.ConstructUsing(() => new Program());
-                    s.WhenStarted((service, host) =>
+                    s.BeforeStartingService((hostStart) =>
                     {
                         if (!Directory.Exists(_testDir))
                             Directory.CreateDirectory(_testDir);
-                        using (FileStream fs = File.Create(_testDir + "testfile.ext"))
-                        {
-                        }
-                        return true;
                     });
+                    s.WhenStarted((service, host) => true);
                     s.WhenStopped((service, host) => true);
-                    s.WhenFileSystemCreated(configurator =>
-                        configurator.AddDirectory(dir =>
-                        {
-                            dir.Path = _testDir;
-                            dir.CreateDir = true;
-                            dir.NotifyFilters = NotifyFilters.FileName;
-                        }), FileSystemCreated);
+                    s.WhenFileSystemCreated(ConfigureDirectoryWorkCreated, FileSystemCreated);
+                    s.WhenFileSystemChanged(ConfigureDirectoryWorkChanged, FileSystemCreated);
+                    s.WhenFileSystemRenamed(ConfigureDirectoryWorkRenamedFile, FileSystemRenamedFile);
+                    s.WhenFileSystemRenamed(ConfigureDirectoryWorkRenamedDirectory, FileSystemRenamedDirectory);
+                    s.WhenFileSystemDeleted(ConfigureDirectoryWorkDeleted, FileSystemCreated);
                 });
+            });
+            Console.ReadKey();
+        }
+
+        private static void ConfigureDirectoryWorkCreated(FileSystemWatcherConfigurator fswConfig)
+        {
+            fswConfig.AddDirectory(dir =>
+            {
+                dir.Path = _testDir;
+                dir.IncludeSubDirectories = _includeSubDirectories;
+                dir.NotifyFilters = NotifyFilters.DirectoryName | NotifyFilters.FileName;
+                dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
+            });
+        }
+        private static void ConfigureDirectoryWorkChanged(FileSystemWatcherConfigurator fswConfig)
+        {
+            fswConfig.AddDirectory(dir =>
+            {
+                dir.Path = _testDir;
+                dir.IncludeSubDirectories = _includeSubDirectories;
+                dir.NotifyFilters = NotifyFilters.LastWrite;
+                dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
+            });
+        }
+        private static void ConfigureDirectoryWorkRenamedFile(FileSystemWatcherConfigurator fswConfig)
+        {
+            fswConfig.AddDirectory(dir =>
+            {
+                dir.Path = _testDir;
+                dir.IncludeSubDirectories = _includeSubDirectories;
+                dir.NotifyFilters = NotifyFilters.FileName;
+                dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
+            });
+        }
+        private static void ConfigureDirectoryWorkRenamedDirectory(FileSystemWatcherConfigurator fswConfig)
+        {
+            fswConfig.AddDirectory(dir =>
+            {
+                dir.Path = _testDir;
+                dir.IncludeSubDirectories = _includeSubDirectories;
+                dir.NotifyFilters = NotifyFilters.DirectoryName;
+                dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
+            });
+        }
+        private static void ConfigureDirectoryWorkDeleted(FileSystemWatcherConfigurator fswConfig)
+        {
+            fswConfig.AddDirectory(dir =>
+            {
+                dir.Path = _testDir;
+                dir.IncludeSubDirectories = _includeSubDirectories;
+                dir.NotifyFilters = NotifyFilters.DirectoryName | NotifyFilters.FileName;
+                dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
             });
         }
 
         private static void FileSystemCreated(TopshelfFileSystemEventArgs topshelfFileSystemEventArgs)
         {
-            Console.WriteLine("New file created! ChangeType = {0} FullPath = {1} Name = {2} FileSystemEventType {3}", topshelfFileSystemEventArgs.ChangeType, topshelfFileSystemEventArgs.FullPath, topshelfFileSystemEventArgs.Name, topshelfFileSystemEventArgs.FileSystemEventType);
+            Console.WriteLine("*********************");
+            Console.WriteLine("ChangeType = {0}", topshelfFileSystemEventArgs.ChangeType);
+            Console.WriteLine("FullPath = {0}", topshelfFileSystemEventArgs.FullPath);
+            Console.WriteLine("Name = {0}", topshelfFileSystemEventArgs.Name);
+            Console.WriteLine("FileSystemEventType {0}", topshelfFileSystemEventArgs.FileSystemEventType);
+            Console.WriteLine("*********************");
+        }
+
+        private static void FileSystemRenamedFile(TopshelfFileSystemEventArgs topshelfFileSystemEventArgs)
+        {
+            Console.WriteLine("*********************");
+            Console.WriteLine("Rename File");
+            Console.WriteLine("ChangeType = {0}", topshelfFileSystemEventArgs.ChangeType);
+            Console.WriteLine("FullPath = {0}", topshelfFileSystemEventArgs.FullPath);
+            Console.WriteLine("Name = {0}", topshelfFileSystemEventArgs.Name);
+            Console.WriteLine("FileSystemEventType {0}", topshelfFileSystemEventArgs.FileSystemEventType);
+            Console.WriteLine("*********************");
+        }
+
+        private static void FileSystemRenamedDirectory(TopshelfFileSystemEventArgs topshelfFileSystemEventArgs)
+        {
+            Console.WriteLine("*********************");
+            Console.WriteLine("Rename Dir");
+            Console.WriteLine("ChangeType = {0}", topshelfFileSystemEventArgs.ChangeType);
+            Console.WriteLine("FullPath = {0}", topshelfFileSystemEventArgs.FullPath);
+            Console.WriteLine("Name = {0}", topshelfFileSystemEventArgs.Name);
+            Console.WriteLine("FileSystemEventType {0}", topshelfFileSystemEventArgs.FileSystemEventType);
+            Console.WriteLine("*********************");
         }
     }
 }

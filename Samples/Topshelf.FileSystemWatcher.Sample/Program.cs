@@ -33,9 +33,9 @@ namespace Topshelf.FileSystemWatcher.Sample
             Console.ReadKey();
         }
 
-        private static void ConfigureDirectoryWorkCreated(FileSystemWatcherConfigurator obj)
+        private static void ConfigureDirectoryWorkCreated(FileSystemWatcherConfigurator fswConfig)
         {
-            obj.AddDirectory(dir =>
+            fswConfig.AddDirectory(dir =>
             {
                 dir.Path = _testDir;
                 dir.IncludeSubDirectories = _includeSubDirectories;
@@ -43,9 +43,9 @@ namespace Topshelf.FileSystemWatcher.Sample
                 dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
             });
         }
-        private static void ConfigureDirectoryWorkChanged(FileSystemWatcherConfigurator obj)
+        private static void ConfigureDirectoryWorkChanged(FileSystemWatcherConfigurator fswConfig)
         {
-            obj.AddDirectory(dir =>
+            fswConfig.AddDirectory(dir =>
             {
                 dir.Path = _testDir;
                 dir.IncludeSubDirectories = _includeSubDirectories;
@@ -53,9 +53,9 @@ namespace Topshelf.FileSystemWatcher.Sample
                 dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
             });
         }
-        private static void ConfigureDirectoryWorkRenamedFile(FileSystemWatcherConfigurator obj)
+        private static void ConfigureDirectoryWorkRenamedFile(FileSystemWatcherConfigurator fswConfig)
         {
-            obj.AddDirectory(dir =>
+            fswConfig.AddDirectory(dir =>
             {
                 dir.Path = _testDir;
                 dir.IncludeSubDirectories = _includeSubDirectories;
@@ -63,9 +63,9 @@ namespace Topshelf.FileSystemWatcher.Sample
                 dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
             });
         }
-        private static void ConfigureDirectoryWorkRenamedDirectory(FileSystemWatcherConfigurator obj)
+        private static void ConfigureDirectoryWorkRenamedDirectory(FileSystemWatcherConfigurator fswConfig)
         {
-            obj.AddDirectory(dir =>
+            fswConfig.AddDirectory(dir =>
             {
                 dir.Path = _testDir;
                 dir.IncludeSubDirectories = _includeSubDirectories;
@@ -73,9 +73,9 @@ namespace Topshelf.FileSystemWatcher.Sample
                 dir.ExcludeDuplicateEvents = _excludeDuplicateEvents;
             });
         }
-        private static void ConfigureDirectoryWorkDeleted(FileSystemWatcherConfigurator obj)
+        private static void ConfigureDirectoryWorkDeleted(FileSystemWatcherConfigurator fswConfig)
         {
-            obj.AddDirectory(dir =>
+            fswConfig.AddDirectory(dir =>
             {
                 dir.Path = _testDir;
                 dir.IncludeSubDirectories = _includeSubDirectories;

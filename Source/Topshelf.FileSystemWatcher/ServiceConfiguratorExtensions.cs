@@ -185,13 +185,6 @@ namespace Topshelf.FileSystemWatcher
                     _watchers.Add(fileSystemWatcher);
 
                     log.Info($"[Topshelf.FileSystemWatcher] configured to listen for events in {config.Path}");
-
-                    //foreach (System.IO.FileSystemWatcher watcher in _watchers)
-                    //{
-                    //    watcher.EnableRaisingEvents = true;
-                    //}
-
-                    //log.Info("[Topshelf.FileSystemWatcher] listening for events");
                 }
             });
         }

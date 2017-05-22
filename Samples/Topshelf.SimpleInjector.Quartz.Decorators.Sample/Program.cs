@@ -2,6 +2,7 @@
 using System.Reflection;
 using Quartz;
 using SimpleInjector;
+using SimpleInjector.Lifestyles;
 
 namespace Topshelf.SimpleInjector.Quartz.Decorators.Sample
 {
@@ -107,7 +108,7 @@ namespace Topshelf.SimpleInjector.Quartz.Decorators.Sample
 
             public void Execute(IJobExecutionContext context)
             {
-                using (_container.BeginLifetimeScope())
+                using (ThreadScopedLifestyle.BeginScope(_container))
                 {
                     Console.WriteLine("See, i am decorating the Job: " + typeof(JobWithInjectedDependenciesDecorated).Name + " with a Lifetime Scope!");
                     var job = _decorateeFactory.Invoke();

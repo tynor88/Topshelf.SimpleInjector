@@ -118,6 +118,6 @@ References
 
 Copyright & License
 =======================
-Copyright 2014-2017 tynor88
+Copyright 2014-2017
 
 Licensed under the [MIT License](https://github.com/tynor88/Topshelf.SimpleInjector/blob/master/LICENSE)

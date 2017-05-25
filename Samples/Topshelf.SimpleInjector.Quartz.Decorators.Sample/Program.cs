@@ -2,6 +2,7 @@
 using System.Reflection;
 using Quartz;
 using SimpleInjector;
+using SimpleInjector.Lifestyles;
 
 namespace Topshelf.SimpleInjector.Quartz.Decorators.Sample
 {
@@ -13,7 +14,7 @@ namespace Topshelf.SimpleInjector.Quartz.Decorators.Sample
         {
             _container.Register<IDependencyInjected, DependencyInjected>();
             _container.RegisterDecorator(typeof(IJob), typeof(LoggingDecorator));
-            _container.RegisterDecorator(typeof(IJob), typeof(LifetimeScopeDecoratorFuncTFactory));
+            _container.RegisterDecorator(typeof(IJob), typeof(ThreadScopedDecoratorFuncTFactory));
 
             HostFactory.Run(config =>
             {
@@ -94,12 +95,12 @@ namespace Topshelf.SimpleInjector.Quartz.Decorators.Sample
             }
         }
 
-        public class LifetimeScopeDecoratorFuncTFactory : IJob
+        public class ThreadScopedDecoratorFuncTFactory : IJob
         {
             private readonly Func<IJob> _decorateeFactory;
             private readonly Container _container;
 
-            public LifetimeScopeDecoratorFuncTFactory(Func<IJob> decorateeFactory, Container container)
+            public ThreadScopedDecoratorFuncTFactory(Func<IJob> decorateeFactory, Container container)
             {
                 _decorateeFactory = decorateeFactory;
                 _container = container;
@@ -107,9 +108,9 @@ namespace Topshelf.SimpleInjector.Quartz.Decorators.Sample
 
             public void Execute(IJobExecutionContext context)
             {
-                using (_container.BeginLifetimeScope())
+                using (ThreadScopedLifestyle.BeginScope(_container))
                 {
-                    Console.WriteLine("See, i am decorating the Job: " + typeof(JobWithInjectedDependenciesDecorated).Name + " with a Lifetime Scope!");
+                    Console.WriteLine("See, i am decorating the Job: " + typeof(JobWithInjectedDependenciesDecorated).Name + " with a Thread Scope!");
                     var job = _decorateeFactory.Invoke();
                     job.Execute(context);
                 }

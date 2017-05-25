@@ -29,7 +29,7 @@ namespace Topshelf.SimpleInjector.Quartz.Sample
                             new
                             {
                                 type,
-                                ctor = _container.Options.ConstructorResolutionBehavior.GetConstructor(typeof(IJob), type)
+                                ctor = _container.Options.ConstructorResolutionBehavior.GetConstructor(type)
                             })
                     .Select(
                         type =>

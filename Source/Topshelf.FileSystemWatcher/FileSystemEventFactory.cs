@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 namespace Topshelf.FileSystemWatcher
 {
@@ -9,12 +9,17 @@ namespace Topshelf.FileSystemWatcher
     {
         public static TopshelfFileSystemEventArgs CreateNormalFileSystemEvent(FileSystemEventArgs fileSystemEventArgs)
         {
-            return new TopshelfFileSystemEventArgs(fileSystemEventArgs.ChangeType, Path.GetDirectoryName(fileSystemEventArgs.FullPath), fileSystemEventArgs.Name, FileSystemEventType.Normal);
+            return new TopshelfFileSystemEventArgs(fileSystemEventArgs.ChangeType, Path.GetDirectoryName(fileSystemEventArgs.FullPath), fileSystemEventArgs.Name, null, FileSystemEventType.Normal);
+        }
+
+        public static TopshelfFileSystemEventArgs CreateRenamedFileSystemEvent(RenamedEventArgs fileSystemEventArgs)
+        {
+            return new TopshelfFileSystemEventArgs(fileSystemEventArgs.ChangeType, Path.GetDirectoryName(fileSystemEventArgs.FullPath), fileSystemEventArgs.Name, fileSystemEventArgs.OldName, FileSystemEventType.Renamed);
         }
 
         public static TopshelfFileSystemEventArgs CreateCurrentStateFileSystemEvent(string directory, string name)
         {
-            return new TopshelfFileSystemEventArgs(WatcherChangeTypes.All, directory, name, FileSystemEventType.CurrentState);
+            return new TopshelfFileSystemEventArgs(WatcherChangeTypes.All, directory, name, null, FileSystemEventType.CurrentState);
         }
     }
 }

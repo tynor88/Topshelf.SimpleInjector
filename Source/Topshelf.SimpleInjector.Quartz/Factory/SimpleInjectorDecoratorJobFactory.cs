@@ -33,7 +33,7 @@ namespace Topshelf.SimpleInjector.Quartz.Factory
                 from type in assembly.GetTypes()
                 where typeof(IJob).IsAssignableFrom(type)
                 where !type.IsAbstract && !type.IsGenericTypeDefinition
-                let ctor = container.Options.ConstructorResolutionBehavior.GetConstructor(typeof(IJob), type)
+                let ctor = container.Options.ConstructorResolutionBehavior.GetConstructor(type)
                 let typeIsDecorator = ctor.GetParameters().Any(p => p.ParameterType == typeof(IJob))
                 let typeIsDecorateeFactory = ctor.GetParameters().Any(p => p.ParameterType == typeof(Func<IJob>))
                 where !typeIsDecorator && !typeIsDecorateeFactory

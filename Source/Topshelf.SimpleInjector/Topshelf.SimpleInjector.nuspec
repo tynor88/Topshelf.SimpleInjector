@@ -14,7 +14,7 @@
     <copyright>Copyright $author$ 2014</copyright>
     <tags>Topshelf SimpleInjector IoC Inversion-of-control Service WindowsService Dependency Injection DI Host</tags>
     <dependencies>
-      <dependency id="SimpleInjector" version="3.1.2" />
+      <dependency id="SimpleInjector" version="4.0.0" />
       <dependency id="Topshelf" version="3.3.1" />
     </dependencies>
   </metadata>

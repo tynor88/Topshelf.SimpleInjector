@@ -64,8 +64,8 @@
     <Reference Include="Topshelf, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Topshelf.4.0.3\lib\net452\Topshelf.dll</HintPath>
     </Reference>
-    <Reference Include="Topshelf.SimpleInjector, Version=1.0.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Topshelf.SimpleInjector.1.0.0.17\lib\net40\Topshelf.SimpleInjector.dll</HintPath>
+    <Reference Include="Topshelf.SimpleInjector, Version=1.0.0.20, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Topshelf.SimpleInjector.1.0.0.20\lib\net452\Topshelf.SimpleInjector.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
